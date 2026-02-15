@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - Bella Vista Bistro</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <div id="admin-root">
+    <aside class="admin-sidebar">
+      <div class="admin-brand">
+        <h2>Bella Vista</h2>
+      </div>
+      <nav class="admin-nav">
+        <button data-view="overview" class="active">Overview</button>
+        <button data-view="menu">Manage Menu</button>
+        <button data-view="orders">Orders</button>
+        <button data-view="reservations">Reservations</button>
+        <button data-view="messages">Messages</button>
+        <button data-view="users">Users</button>
+      </nav>
+      <div class="admin-footer"><button id="logout-btn">Logout</button></div>
+    </aside>
+
+    <main class="admin-main">
+      <header class="admin-top">
+        <div class="search">Admin Dashboard</div>
+        <div class="admin-actions">
+          <button id="notify-btn" class="icon-btn"><i class="fa fa-bell"></i><span id="notify-count" class="badge hidden">0</span></button>
+        </div>
+      </header>
+
+      <section id="view-overview" class="admin-view">
+        <div class="grid dashboard-cards">
+          <div class="card"><h4>Total Orders</h4><div id="total-orders">0</div></div>
+          <div class="card"><h4>Total Revenue</h4><div id="total-revenue">$0.00</div></div>
+          <div class="card"><h4>Reservations</h4><div id="total-res">0</div></div>
+        </div>
+        <div class="card chart-card"><canvas id="sales-chart"></canvas></div>
+      </section>
+
+      <section id="view-menu" class="admin-view hidden">
+        <div class="card">
+          <h3>Add Menu Item</h3>
+          <form id="menu-form">
+            <input id="item-name" placeholder="Name">
+            <input id="item-desc" placeholder="Description">
+            <input id="item-price" type="number" step="0.01" placeholder="Price">
+            <input id="item-category" placeholder="Category">
+            <input id="item-image" placeholder="Image URL">
+            <button type="submit" class="btn primary">Add Item</button>
+          </form>
+        </div>
+        <div id="menu-list" class="grid"></div>
+      </section>
+
+      <section id="view-orders" class="admin-view hidden">
+        <h3>Orders</h3>
+        <div id="orders-list"></div>
+      </section>
+
+      <section id="view-reservations" class="admin-view hidden">
+        <h3>Reservations</h3>
+        <div id="reservations-list"></div>
+      </section>
+
+      <section id="view-messages" class="admin-view hidden">
+        <h3>Messages</h3>
+        <div id="messages-list"></div>
+      </section>
+
+      <section id="view-users" class="admin-view hidden">
+        <h3>Users</h3>
+        <div id="users-list"></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Edit modal -->
+  <div id="edit-modal" class="modal hidden">
+    <div class="modal-content card">
+      <h3>Edit Menu Item</h3>
+      <form id="edit-form">
+        <input id="edit-name" placeholder="Name">
+        <input id="edit-desc" placeholder="Description">
+        <input id="edit-price" type="number" step="0.01" placeholder="Price">
+        <input id="edit-category" placeholder="Category">
+        <input id="edit-image" placeholder="Image URL">
+        <div class="modal-actions">
+          <button type="button" id="edit-cancel" class="btn">Cancel</button>
+          <button type="submit" class="btn primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
