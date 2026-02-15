@@ -1,9 +1,11 @@
 :root{
-	--bg:#0f0f10;
-	--card:#0f0f10;
-	--muted:#9b9b9b;
-	--accent:#c59d5f; /* gold */
-	--accent-2:#b71c1c; /* deep red */
+	--bg:#f9fafb;
+	--card:#ffffff;
+	--muted:#6b7280;
+	--brand:#0b3d91; /* navy blue */
+	--brand-dark:#06284d;
+	--primary:var(--brand);
+	--primary-700:#062e6b;
 	--white:#ffffff;
 	--glass: rgba(255,255,255,0.06);
 	--container:1200px;
@@ -21,8 +23,8 @@ body{font-family:Inter,system-ui,Segoe UI,Arial;padding:0;margin:0;background:li
 .main-nav a{color:inherit;text-decoration:none;padding:0.25rem 0.5rem}
 .btn{display:inline-block;padding:0.5rem 1rem;border-radius:8px;text-decoration:none}
 .btn.small{font-size:0.9rem}
-.btn.primary{background:var(--accent-2);color:var(--white);box-shadow:0 6px 18px rgba(183,28,28,0.12)}
-.btn.ghost{background:transparent;border:1px solid rgba(0,0,0,0.06);color:#222}
+.btn.primary{background:var(--primary);color:var(--white);box-shadow:0 6px 18px rgba(11,61,145,0.12)}
+.btn.ghost{background:transparent;border:1px solid rgba(9,30,66,0.06);color:#222}
 .icon-btn{background:transparent;border:none;font-size:1.1rem;padding:0.5rem;border-radius:8px}
 
 .hero{padding:4rem 0}
@@ -43,7 +45,7 @@ body{font-family:Inter,system-ui,Segoe UI,Arial;padding:0;margin:0;background:li
 .menu-card h3{margin:0;font-size:1.05rem}
 .menu-card .meta{display:flex;justify-content:space-between;align-items:center}
 .menu-card .actions{display:flex;gap:0.5rem}
-.menu-card .price{font-weight:700;color:var(--accent-2)}
+.menu-card .price{font-weight:700;color:var(--primary)}
 
 .order-layout{display:flex;gap:2rem;align-items:flex-start}
 .cart{min-width:300px;background:#fff;padding:1rem;border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,0.06)}
@@ -72,11 +74,11 @@ body{font-family:Inter,system-ui,Segoe UI,Arial;padding:0;margin:0;background:li
 }
 
 /* Admin styles */
-.admin-sidebar{width:220px;position:fixed;left:0;top:0;bottom:0;background:#0b0b0b;color:#fff;padding:1rem;display:flex;flex-direction:column}
-.admin-main{margin-left:240px;padding:1.5rem}
+.admin-sidebar{width:240px;position:fixed;left:0;top:0;bottom:0;background:var(--brand-dark);color:var(--white);padding:1.25rem;display:flex;flex-direction:column}
+.admin-main{margin-left:260px;padding:1.5rem}
 .admin-nav{display:flex;flex-direction:column;gap:0.4rem;margin-top:1rem}
-.admin-nav button{background:transparent;border:none;color:#ddd;padding:0.5rem;text-align:left;border-radius:8px}
-.admin-nav button.active{background:linear-gradient(90deg,#c59d5f22,transparent);color:#fff}
+.admin-nav button{background:transparent;border:none;color:#e6eefc;padding:0.55rem;text-align:left;border-radius:8px}
+.admin-nav button.active{background:linear-gradient(90deg,rgba(11,61,145,0.12),transparent);color:#fff}
 .admin-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
 .dashboard-cards{display:flex;gap:1rem}
 .dashboard-cards .card{flex:1;padding:1rem}
@@ -91,10 +93,18 @@ body{font-family:Inter,system-ui,Segoe UI,Arial;padding:0;margin:0;background:li
 /* small adjustments */
 .muted{color:#777}
 .hidden{display:none}
-.badge{background:var(--accent);color:#fff;border-radius:999px;padding:0.15rem 0.45rem;font-size:0.8rem}
+.badge{background:var(--brand);color:#fff;border-radius:999px;padding:0.15rem 0.45rem;font-size:0.8rem}
 
 /* micro interactions */
 .card{transition:transform .18s ease,box-shadow .18s ease}
-.card:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(0,0,0,0.08)}
+.card:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(11,61,145,0.08)}
 .btn{transition:transform .12s ease,box-shadow .12s ease}
 .btn:active{transform:translateY(1px)}
+
+/* Brand text usages */
+.brand h1{color:var(--brand);}
+.admin-brand h2{margin:0;color:var(--white);font-weight:700}
+
+/* Slight adjustments for admin cards and headers */
+.admin-top{color:#e6eefc}
+.dashboard-cards .card{background:linear-gradient(180deg, #fbfdff, #f6f9ff)}
