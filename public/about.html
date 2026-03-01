@@ -16,7 +16,7 @@
 <nav class="navbar-professional">
   <div class="navbar-container">
     <div class="navbar-brand">
-      <a href="index.html"><h1>Bella Vista Bistro</h1></a>
+      <a href="index.html"><h1><span class="restaurant-name">Bella Vista Bistro</span></h1></a>
     </div>
     <ul class="navbar-menu">
       <li><a href="index.html">Home</a></li>
@@ -36,27 +36,8 @@
 <h1 style="font-size: 40px;">Our Team</h1>
 <hr>
 <br>
-<div class="about-container">
-<div class="about-img">
-<img src="html_them/img/author-01.png">
-<h2>Chef Alex</h2>
-<p>Head Chef</p>
-</div>
-<div class="about-img">
-<img src="html_them/img/author-02.png">
-<h2>Chef Alex</h2>
-<p>Head Chef</p>
-</div>
-<div class="about-img">
-<img src="html_them/img/author-03.png">
-<h2>Chef Alex</h2>
-<p>Head Chef</p>
-</div>
-<div class="about-img">
-<img src="html_them/img/author-04.png">
-<h2>Chef Alex</h2>
-<p>Head Chef</p>
-</div>
+<div class="about-container" id="team-container">
+<!-- team members loaded dynamically -->
 </div>
 </center>
 
@@ -131,73 +112,10 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
   <div class="footer-bottom">&copy; <span id="year3"></span> Bella Vista Bistro — All rights reserved</div>
 </footer>
 
+<script src="js/site.js"></script>
 <script>
-function updateAuthUI() {
-  const token = localStorage.getItem('token');
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
-  const authContainer = document.getElementById('authLinkContainer');
-  
-  if (token && user.id) {
-    const userDisplay = user.role === 'admin' ? `${user.name} (Admin)` : user.name;
-    let html = `<span class="user-menu"><span style="color: white; font-size: 14px;">Hello, ${userDisplay}</span>`;
-    if (user.role === 'admin') {
-      html += `<a href="admin_new.html" class="btn-admin">Admin Panel</a>`;
-    }
-    html += `<button class="btn-logout" onclick="logout()">Logout</button></span>`;
-    authContainer.innerHTML = html;
-  } else {
-    authContainer.innerHTML = '<a href="login.html" class="btn-auth">Login / Register</a>';
-  }
-}
-
-function logout() {
-  localStorage.removeItem('token');
-  localStorage.removeItem('user');
-  localStorage.removeItem('expiresAt');
-  updateAuthUI();
-  location.reload();
-}
-
-function updateCartCount() {
-  try {
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    const count = cart.reduce((sum, item) => sum + (item.qty || 0), 0);
-    document.querySelectorAll('.cart-count').forEach(el => {
-      el.textContent = count;
-    });
-  } catch (e) {
-    console.log('Cart count update error');
-  }
-}
-
-updateAuthUI();
-updateCartCount();
-window.addEventListener('storage', () => {
-  updateAuthUI();
-  updateCartCount();
-});
-
-document.getElementById('footer-news-form-3')?.addEventListener('submit', async function(e){ 
-  e.preventDefault(); 
-  const email = this.querySelector('input[type="email"]').value;
-  try {
-    const response = await fetch('/api/newsletter/subscribe', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ email })
-    });
-    if (response.ok) {
-      alert('Thanks for subscribing!');
-      this.reset();
-    } else {
-      alert('Failed to subscribe');
-    }
-  } catch(e) {
-    console.log('Offline mode');
-    this.reset();
-  }
-});
-document.getElementById('year3').textContent = new Date().getFullYear();
+// page-specific newsletter handling
+// (site.js already provides auth, cart and settings updates)
 </script>
 </body>
 

@@ -273,7 +273,7 @@
   <header class="navbar-professional" style="padding: 0;">
     <div class="navbar-container">
       <div class="navbar-brand">
-        <a href="index.html"><h1>Bella Vista Bistro</h1></a>
+        <a href="index.html"><h1><span class="restaurant-name">Bella Vista Bistro</span></h1></a>
       </div>
       <ul class="navbar-menu">
         <li><a href="index.html">Home</a></li>
@@ -455,60 +455,11 @@
       }
     });
 
-    // Authentication UI handler
-    function updateAuthUI() {
-      const token = localStorage.getItem('token');
-      const user = JSON.parse(localStorage.getItem('user') || '{}');
-      const authContainer = document.getElementById('authLinkContainer');
-      
-      if (token && user.id) {
-        const userDisplay = user.role === 'admin' ? `${user.name} (Admin)` : user.name;
-        let html = `<span class="user-menu"><span style="color: white; font-size: 14px;">Hello, ${userDisplay}</span>`;
-        if (user.role === 'admin') {
-          html += `<a href="admin_new.html" class="btn-admin">Admin Panel</a>`;
-        }
-        html += `<button class="btn-logout" onclick="logout()">Logout</button></span>`;
-        authContainer.innerHTML = html;
-      }
-    }
-
-    function logout() {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      localStorage.removeItem('expiresAt');
-      updateAuthUI();
-      location.reload();
-    }
-
-    function updateCartCount() {
-      try {
-        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-        const count = cart.reduce((sum, item) => sum + (item.qty || 0), 0);
-        document.querySelectorAll('.cart-count').forEach(el => {
-          el.textContent = count;
-        });
-      } catch (e) {
-        console.log('Cart count update error');
-      }
-    }
-
-    function showAlert(message, type) {
-      const alertContainer = document.getElementById('alert-container');
-      const alert = document.createElement('div');
-      alert.className = `alert ${type}`;
-      alert.innerHTML = `<i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'check-circle'}"></i> ${message}`;
-      alertContainer.innerHTML = '';
-      alertContainer.appendChild(alert);
-      alertContainer.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    // Initialize on page load
-    updateAuthUI();
-    updateCartCount();
-    window.addEventListener('storage', () => {
-      updateAuthUI();
-      updateCartCount();
-    });
+    // site.js handles auth UI and cart count
+    <script src="js/site.js"></script>
+    <script>
+    // newsletter handler from earlier remains above
+    </script>
   </script>
 </body>
 </html>

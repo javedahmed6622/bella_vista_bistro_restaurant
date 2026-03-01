@@ -359,7 +359,7 @@
   <header class="navbar-professional" style="padding: 0;">
     <div class="navbar-container">
       <div class="navbar-brand">
-        <a href="index.html"><h1>Bella Vista Bistro</h1></a>
+        <a href="index.html"><h1><span class="restaurant-name">Bella Vista Bistro</span></h1></a>
       </div>
       <ul class="navbar-menu">
         <li><a href="index.html">Home</a></li>
@@ -520,54 +520,13 @@
       location.href = 'menu.html';
     });
 
-    // Authentication handling
-    function updateAuthUI() {
-      const token = localStorage.getItem('token');
-      const user = JSON.parse(localStorage.getItem('user') || '{}');
-      const authContainer = document.getElementById('authLinkContainer');
-      
-      if (token && user.id) {
-        const userDisplay = user.role === 'admin' ? `${user.name} (Admin)` : user.name;
-        let html = `<span class="user-menu"><span style="color: white; font-size: 14px;">Hello, ${userDisplay}</span>`;
-        if (user.role === 'admin') {
-          html += `<a href="admin_new.html" class="btn-admin">Admin Panel</a>`;
-        }
-        html += `<button class="btn-logout" onclick="logout()">Logout</button></span>`;
-        authContainer.innerHTML = html;
-      } else {
-        authContainer.innerHTML = '<a href="login.html" class="btn-auth">Login / Register</a>';
-      }
-    }
-
-    function logout() {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      localStorage.removeItem('expiresAt');
-      updateAuthUI();
-      location.reload();
-    }
-
-    function updateCartCount() {
-      try {
-        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-        const count = cart.reduce((sum, item) => sum + (item.qty || 0), 0);
-        document.querySelectorAll('.cart-count').forEach(el => {
-          el.textContent = count;
-        });
-      } catch (e) {
-        console.log('Cart count update error');
-      }
-    }
-
-    // Initialize page
+    // page-specific initialization
     renderCart();
-    updateAuthUI();
-    updateCartCount();
     window.addEventListener('storage', () => {
       renderCart();
-      updateAuthUI();
       updateCartCount();
     });
   </script>
+  <script src="js/site.js"></script>
 </body>
 </html>

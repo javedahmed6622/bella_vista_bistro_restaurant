@@ -41,36 +41,8 @@
 
 <br>
 <br>
-<div class="container1" style="background-color:#FAFAFA;">
-  <div class="container-img" data-name="Pizza" data-price="25" data-img="html_them/img/pizza.webp">
-    <img src="html_them/img/pizza.webp" alt="Pizza" onclick="openModal(this.src)">
-    <div class="item-info"><div><p style="margin:0;color:#e53935;font-weight:700;">Pizza</p><p class="price">25/-</p></div><button class="add-btn" data-name="Pizza" data-price="25" data-img="html_them/img/pizza.webp">Add to cart</button></div>
-  </div>
-  <div class="container-img" data-name="Veg Pizza" data-price="22" data-img="html_them/img/pizza.webp">
-    <img src="html_them/img/pizza.webp" alt="Veg Pizza" onclick="openModal(this.src)">
-    <div class="item-info"><div><p style="margin:0;color:#e53935;font-weight:700;">Veg Pizza</p><p class="price">22/-</p></div><button class="add-btn" data-name="Veg Pizza" data-price="22" data-img="html_them/img/pizza.webp">Add to cart</button></div>
-  </div>
-  <div class="container-img" data-name="Cheese Pizza" data-price="28" data-img="html_them/img/pizza.webp">
-    <img src="html_them/img/pizza.webp" alt="Cheese Pizza" onclick="openModal(this.src)">
-    <div class="item-info"><div><p style="margin:0;color:#e53935;font-weight:700;">Cheese Pizza</p><p class="price">28/-</p></div><button class="add-btn" data-name="Cheese Pizza" data-price="28" data-img="html_them/img/pizza.webp">Add to cart</button></div>
-  </div>
-  <div class="container-img" data-name="Chocolate Cake" data-price="18" data-img="html_them/img/cake3.jpg">
-    <img src="html_them/img/cake3.jpg" alt="Cake" onclick="openModal(this.src)">
-    <div class="item-info"><div><p style="margin:0;color:#e53935;font-weight:700;">Chocolate Cake</p><p class="price">18/-</p></div><button class="add-btn" data-name="Chocolate Cake" data-price="18" data-img="html_them/img/cake3.jpg">Add to cart</button></div>
-  </div>
-  <div class="container-img" data-name="Sandwich" data-price="12" data-img="html_them/img/sandwich2.jpg">
-    <img src="html_them/img/sandwich2.jpg" alt="Sandwich" onclick="openModal(this.src)">
-    <div class="item-info"><div><p style="margin:0;color:#e53935;font-weight:700;">Sandwich</p><p class="price">12/-</p></div><button class="add-btn" data-name="Sandwich" data-price="12" data-img="html_them/img/sandwich2.jpg">Add to cart</button></div>
-  </div>
-  <div class="container-img" data-name="Strawberry Cake" data-price="20" data-img="html_them/img/cake3.jpg">
-    <img src="html_them/img/cake3.jpg" alt="Cake" onclick="openModal(this.src)">
-    <div class="item-info"><div><p style="margin:0;color:#e53935;font-weight:700;">Strawberry Cake</p><p class="price">20/-</p></div><button class="add-btn" data-name="Strawberry Cake" data-price="20" data-img="html_them/img/cake3.jpg">Add to cart</button></div>
-  </div>
-  <div class="container-img" data-name="Blueberry Cake" data-price="22" data-img="html_them/img/cake3.jpg">
-    <img src="html_them/img/cake3.jpg" alt="Cake" onclick="openModal(this.src)">
-    <div class="item-info"><div><p style="margin:0;color:#e53935;font-weight:700;">Blueberry Cake</p><p class="price">22/-</p></div><button class="add-btn" data-name="Blueberry Cake" data-price="22" data-img="html_them/img/cake3.jpg">Add to cart</button></div>
-  </div>
-</div>
+<div id="menu-filters" style="margin-bottom:20px; text-align:center"></div>
+<div class="container1" id="menu-items" style="background-color:#FAFAFA;"></div>
 
 <!-- image modal -->
 <div class="image-modal" id="imageModal">
@@ -188,6 +160,7 @@ document.getElementById('year2').textContent = new Date().getFullYear();
 document.getElementById('footer-news-form-2')?.addEventListener('submit', function(e){ e.preventDefault(); alert('Thanks — newsletter subscribed (placeholder)'); });
 document.getElementById('year2').textContent = new Date().getFullYear();
 </script>
+<script src="js/site.js"></script>
 </body>
 
 </html>

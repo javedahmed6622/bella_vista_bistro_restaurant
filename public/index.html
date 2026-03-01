@@ -20,7 +20,7 @@
 <nav class="navbar-professional">
   <div class="navbar-container">
     <div class="navbar-brand">
-      <a href="index.html"><h1>Bella Vista Bistro</h1></a>
+      <a href="index.html"><h1><span class="restaurant-name">Bella Vista Bistro</span></h1></a>
     </div>
     <ul class="navbar-menu">
       <li><a href="index.html">Home</a></li>
@@ -34,6 +34,8 @@
     </ul>
   </div>
 </nav>
+
+<div id="hero-carousel" class="hero-carousel"></div>
 
 <div class="container">
 <div class="container-left">
@@ -98,29 +100,7 @@
 <br>
 <br>
 <br>
-<div class="featured-outer1">
-  <div class="featured-img">
-    <img src="html_them/img/pastra.jpg">
-  </div>
- <div class="featured-img">
-    <img src="html_them/img/pizza.webp">
-  </div>
-   <div class="featured-img">
-    <img src="html_them/img/pasta2.jpg">
-  </div>
-   <div class="featured-img">
-    <img src="html_them/img/cake2.jpg">
-  </div>
-  <div class="featured-img">
-    <img src="html_them/img/jouce.jpg">
-  </div>
-  <div class="featured-img">
-    <img src="html_them/img/sandwich2.jpg">
-  </div>
-  <div class="featured-img">
-    <img src="html_them/img/ppp.webp">
-  </div>
-</div>
+<div id="featured-gallery" class="featured-outer1"></div>
 </center>
 
 
@@ -267,71 +247,18 @@ document.getElementById('footer-news-form')?.addEventListener('submit', async fu
       this.reset();
     } else {
       alert('Failed to subscribe. Please try again.');
-    }
+  }
   } catch (error) {
     console.log('Newsletter subscription (offline mode)');
     this.reset();
   }
 });
 
-document.getElementById('year').textContent = new Date().getFullYear();
-
-// Authentication handling for navbar
-function updateAuthUI() {
-  const token = localStorage.getItem('token');
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
-  const authContainer = document.getElementById('authLinkContainer');
-  
-  if (token && user.id) {
-    // User is logged in
-    const userDisplay = user.role === 'admin' ? `${user.name} (Admin)` : user.name;
-    let html = `
-      <span class="user-menu">
-        <span style="color: white; font-size: 14px;">Hello, ${userDisplay}</span>
-    `;
-    
-    if (user.role === 'admin') {
-      html += `<a href="admin_new.html" class="btn-admin">Admin Panel</a>`;
-    }
-    
-    html += `<button class="btn-logout" onclick="logout()">Logout</button></span>`;
-    authContainer.innerHTML = html;
-  } else {
-    // User is not logged in
-    authContainer.innerHTML = '<a href="login.html" class="btn-auth">Login / Register</a>';
-  }
-}
-
-function logout() {
-  localStorage.removeItem('token');
-  localStorage.removeItem('user');
-  localStorage.removeItem('expiresAt');
-  updateAuthUI();
-  location.reload();
-}
-
-// Update cart count from localStorage
-function updateCartCount() {
-  try {
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    const count = cart.reduce((sum, item) => sum + (item.qty || 0), 0);
-    document.querySelectorAll('.cart-count').forEach(el => {
-      el.textContent = count;
-    });
-  } catch (e) {
-    console.log('Cart count update error');
-  }
-}
-
-// Update UI on page load
-updateAuthUI();
-updateCartCount();
-
-// Listen for storage changes (cart updates from other windows)
-window.addEventListener('storage', () => {
-  updateAuthUI();
-  updateCartCount();
-});
+// include shared site utilities for auth/cart/dynamic content
+</script>
+<script src="js/site.js"></script>
+<script>
+// already loaded site.js handles auth and cart; only keep newsletter handler above
 </script>
 
 </body>
