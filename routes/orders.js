@@ -26,4 +26,14 @@ router.put('/:id', auth, async (req, res) => {
   }
 });
 
+// Protected: delete order
+router.delete('/:id', auth, async (req, res) => {
+  try {
+    await Order.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Order deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;

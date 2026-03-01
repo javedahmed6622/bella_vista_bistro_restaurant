@@ -1,0 +1,584 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Contact Us - Bella Vista Bistro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Poppins', sans-serif;
+        background: #f9f9f9;
+      }
+
+      .contact-wrapper {
+        padding: 30px 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+        margin-top: 100px;
+      }
+
+      .contact-header {
+        text-align: center;
+        margin-bottom: 50px;
+      }
+
+      .contact-header h1 {
+        font-size: 42px;
+        color: #02A237;
+        font-weight: 800;
+        margin-bottom: 15px;
+      }
+
+      .contact-header p {
+        font-size: 16px;
+        color: #666;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+
+      .contact-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        margin-bottom: 50px;
+      }
+
+      .contact-form-section {
+        background: white;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+      }
+
+      .contact-form-section h2 {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 30px;
+        font-weight: 700;
+      }
+
+      .form-group {
+        margin-bottom: 25px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 10px;
+        color: #333;
+        font-weight: 600;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+
+      .input-icon {
+        position: absolute;
+        left: 15px;
+        color: #02A237;
+        font-size: 16px;
+      }
+
+      .form-group input,
+      .form-group textarea {
+        width: 100%;
+        padding: 14px 15px 14px 45px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 14px;
+        font-family: 'Poppins', sans-serif;
+        transition: all 0.3s ease;
+        background: #f9f9f9;
+      }
+
+      .form-group input:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: #02A237;
+        background: white;
+        box-shadow: 0 0 0 4px rgba(2, 162, 55, 0.1);
+      }
+
+      .form-group textarea {
+        resize: vertical;
+        min-height: 120px;
+      }
+
+      .submit-btn {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #02A237 0%, #018B2E 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(2, 162, 55, 0.3);
+      }
+
+      .submit-btn:active {
+        transform: translateY(0);
+      }
+
+      .alert-message {
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        display: none;
+        border-left: 4px solid;
+        animation: slideDown 0.3s ease-out;
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .alert-message.success {
+        background: #d4edda;
+        color: #155724;
+        border-color: #28a745;
+        display: block;
+      }
+
+      .alert-message.error {
+        background: #f8d7da;
+        color: #721c24;
+        border-color: #f5c6cb;
+        display: block;
+      }
+
+      .contact-info {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .info-card {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        text-align: center;
+      }
+
+      .info-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.12);
+      }
+
+      .info-icon {
+        font-size: 40px;
+        color: #02A237;
+        margin-bottom: 15px;
+      }
+
+      .info-card h3 {
+        font-size: 18px;
+        color: #333;
+        margin-bottom: 10px;
+        font-weight: 700;
+      }
+
+      .info-card p {
+        color: #666;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .info-card a {
+        color: #02A237;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s;
+      }
+
+      .info-card a:hover {
+        color: #018B2E;
+      }
+
+      .contact-map {
+        margin-bottom: 50px;
+      }
+
+      .contact-map h2 {
+        font-size: 28px;
+        color: #333;
+        margin-bottom: 20px;
+        font-weight: 700;
+        text-align: center;
+      }
+
+      .map-container {
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+        height: 400px;
+      }
+
+      .map-container iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+
+      .newsletter-section {
+        background: linear-gradient(135deg, #02A237 0%, #018B2E 100%);
+        padding: 50px 40px;
+        border-radius: 15px;
+        text-align: center;
+        color: white;
+        margin-bottom: 50px;
+      }
+
+      .newsletter-section h2 {
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 15px;
+      }
+
+      .newsletter-section p {
+        font-size: 16px;
+        margin-bottom: 30px;
+        opacity: 0.95;
+      }
+
+      .newsletter-form {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+
+      .newsletter-form input {
+        padding: 14px 20px;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-family: 'Poppins', sans-serif;
+      }
+
+      .newsletter-form button {
+        padding: 14px 30px;
+        background: white;
+        color: #02A237;
+        border: none;
+        border-radius: 8px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+      }
+
+      .newsletter-form button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      @media (max-width: 768px) {
+        .contact-content {
+          grid-template-columns: 1fr;
+          gap: 30px;
+        }
+
+        .contact-header h1 {
+          font-size: 32px;
+        }
+
+        .contact-form-section {
+          padding: 30px 20px;
+        }
+
+        .map-container {
+          height: 300px;
+        }
+
+        .newsletter-section {
+          padding: 40px 20px;
+        }
+
+        .newsletter-section h2 {
+          font-size: 26px;
+        }
+
+        .newsletter-form {
+          grid-template-columns: 1fr;
+        }
+
+        .newsletter-form button {
+          width: 100%;
+        }
+      }
+    </style>
+</head>
+<body>
+  <!-- Professional Navigation Header -->
+  <nav class="navbar-professional">
+    <div class="navbar-container">
+      <div class="navbar-brand">
+        <a href="index.html"><h1>Bella Vista Bistro</h1></a>
+      </div>
+      <ul class="navbar-menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart <span class="cart-count">0</span></a></li>
+        <li id="authLinkContainer">
+          <a href="login.html" class="btn-auth">Login</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="contact-wrapper">
+    <!-- Header -->
+    <div class="contact-header">
+      <h1><i class="fas fa-envelope"></i> Get In Touch</h1>
+      <p>We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
+    </div>
+
+    <!-- Contact Form & Info -->
+    <div class="contact-content">
+      <!-- Contact Form -->
+      <div class="contact-form-section">
+        <h2>Send us a Message</h2>
+        <div id="alert-container"></div>
+        <form id="contactForm">
+          <div class="form-group">
+            <label><i class="fas fa-user"></i> Your Name</label>
+            <div class="input-wrapper">
+              <i class="fas fa-user input-icon"></i>
+              <input type="text" name="name" placeholder="Enter your full name" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label><i class="fas fa-envelope"></i> Email Address</label>
+            <div class="input-wrapper">
+              <i class="fas fa-envelope input-icon"></i>
+              <input type="email" name="email" placeholder="your@email.com" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label><i class="fas fa-phone"></i> Phone Number</label>
+            <div class="input-wrapper">
+              <i class="fas fa-phone input-icon"></i>
+              <input type="tel" name="phone" placeholder="+1 (555) 000-0000" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label><i class="fas fa-message"></i> Message</label>
+            <div class="input-wrapper">
+              <i class="fas fa-message input-icon" style="top: 15px;"></i>
+              <textarea name="message" placeholder="Tell us what you think..." required></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="submit-btn">
+            <i class="fas fa-paper-plane"></i> Send Message
+          </button>
+        </form>
+      </div>
+
+      <!-- Contact Info Cards -->
+      <div class="contact-info">
+        <div class="info-card">
+          <div class="info-icon">
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+          <h3>Address</h3>
+          <p>123 Main Street<br>City, State 12345<br>USA</p>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">
+            <i class="fas fa-phone-alt"></i>
+          </div>
+          <h3>Phone</h3>
+          <p><a href="tel:+1234567890">+1 (555) 123-4567</a></p>
+          <p style="margin-top: 10px; font-size: 12px;">Available 24/7</p>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <h3>Email</h3>
+          <p><a href="mailto:info@bellavista.com">info@bellavista.com</a></p>
+          <p style="margin-top: 10px; font-size: 12px;">Response within 24 hours</p>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <h3>Hours</h3>
+          <p>Mon - Fri: 11AM - 10PM<br>Sat: 12PM - 11PM<br>Sun: 12PM - 9PM</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Newsletter Section -->
+    <div class="newsletter-section">
+      <h2>Subscribe to Our Newsletter</h2>
+      <p>Get updates on new dishes, specials, and exclusive offers delivered to your inbox.</p>
+      <form class="newsletter-form" id="newsletter-form">
+        <input type="email" placeholder="Enter your email address" required>
+        <button type="submit"><i class="fas fa-check"></i> Subscribe</button>
+      </form>
+    </div>
+
+    <!-- Map Section -->
+    <div class="contact-map">
+      <h2>Find Us Here</h2>
+      <div class="map-container">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d57903.025838138165!2d91.81983561384499!3d24.900058347511834!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375054d3d270329f%3A0xf58ef93431f67382!2sSylhet!5e0!3m2!1sen!2sbd!4v1770743528318!5m2!1sen!2sbd" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Contact Form Handler
+    document.getElementById('contactForm')?.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const data = {
+        name: this.name.value,
+        email: this.email.value,
+        phone: this.phone.value,
+        message: this.message.value
+      };
+
+      try {
+        const response = await fetch('/api/messages', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+          showAlert('Message sent successfully! We\'ll get back to you soon.', 'success');
+          this.reset();
+        } else {
+          showAlert('Failed to send message. Please try again.', 'error');
+        }
+      } catch (error) {
+        showAlert('Error sending message. Please try again later.', 'error');
+      }
+    });
+
+    // Newsletter Form Handler
+    document.getElementById('newsletter-form')?.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const email = this.querySelector('input[type="email"]').value;
+
+      try {
+        const response = await fetch('/api/newsletter/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+
+        if (response.ok) {
+          alert('Thank you for subscribing! Check your email for confirmation.');
+          this.reset();
+        } else {
+          alert('Email already subscribed or invalid.');
+        }
+      } catch (error) {
+        console.log('Offline mode or server error');
+        this.reset();
+      }
+    });
+
+    function showAlert(message, type) {
+      const alertContainer = document.getElementById('alert-container');
+      const alert = document.createElement('div');
+      alert.className = `alert-message ${type}`;
+      alert.innerHTML = `<i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'check-circle'}"></i> ${message}`;
+      alertContainer.innerHTML = '';
+      alertContainer.appendChild(alert);
+    }
+
+    // Authentication handling
+    function updateAuthUI() {
+      const token = localStorage.getItem('token');
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const authContainer = document.getElementById('authLinkContainer');
+
+      if (token && user.id) {
+        const userDisplay = user.role === 'admin' ? `${user.name} (Admin)` : user.name;
+        let html = `<span class="user-menu"><span style="color: white; font-size: 14px;">Hello, ${userDisplay}</span>`;
+        if (user.role === 'admin') {
+          html += `<a href="admin_new.html" class="btn-admin">Admin Panel</a>`;
+        }
+        html += `<button class="btn-logout" onclick="logout()">Logout</button></span>`;
+        authContainer.innerHTML = html;
+      } else {
+        authContainer.innerHTML = '<a href="login.html" class="btn-auth">Login / Register</a>';
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      localStorage.removeItem('expiresAt');
+      updateAuthUI();
+      location.reload();
+    }
+
+    function updateCartCount() {
+      try {
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        const count = cart.reduce((sum, item) => sum + (item.qty || 0), 0);
+        document.querySelectorAll('.cart-count').forEach(el => {
+          el.textContent = count;
+        });
+      } catch (e) {
+        console.log('Cart count update error');
+      }
+    }
+
+    updateAuthUI();
+    updateCartCount();
+    window.addEventListener('storage', () => {
+      updateAuthUI();
+      updateCartCount();
+    });
+  </script>
+</body>
+</html>

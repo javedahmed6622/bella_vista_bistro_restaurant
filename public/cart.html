@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Shopping Cart - Bella Vista Bistro</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f9f9f9;
+    }
+
+    .cart-wrapper {
+      padding: 30px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      margin-top: 100px;
+    }
+
+    .cart-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .cart-header h1 {
+      font-size: 40px;
+      color: #02A237;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .cart-header p {
+      color: #666;
+      font-size: 16px;
+    }
+
+    .cart-content {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    #cart-empty {
+      text-align: center;
+      padding: 60px 20px;
+      background: white;
+      border-radius: 10px;
+      color: #999;
+      font-size: 18px;
+    }
+
+    #cart-empty i {
+      font-size: 60px;
+      color: #ddd;
+      display: block;
+      margin-bottom: 20px;
+    }
+
+    .cart-items {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      padding: 20px;
+    }
+
+    .cart-item {
+      display: grid;
+      grid-template-columns: 100px 1fr 100px;
+      gap: 20px;
+      padding: 20px;
+      border-bottom: 1px solid #f0f0f0;
+      align-items: center;
+      transition: background 0.3s ease;
+    }
+
+    .cart-item:last-child {
+      border-bottom: none;
+    }
+
+    .cart-item:hover {
+      background: #f9f9f9;
+    }
+
+    .cart-item-image {
+      width: 100px;
+      height: 100px;
+      background: #f0f0f0;
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cart-item-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .cart-item-details h3 {
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .cart-item-details p {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .cart-item-price {
+      color: #02A237;
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .quantity-control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .qty-btn {
+      width: 30px;
+      height: 30px;
+      border: 1px solid #ddd;
+      background: white;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: all 0.3s;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .qty-btn:hover {
+      border-color: #02A237;
+      color: #02A237;
+    }
+
+    .qty-display {
+      min-width: 30px;
+      text-align: center;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .remove-btn {
+      background: #ff6b6b;
+      color: white;
+      border: none;
+      padding: 5px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+
+    .remove-btn:hover {
+      background: #e03131;
+    }
+
+    .cart-summary {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      height: fit-content;
+      position: sticky;
+      top: 120px;
+    }
+
+    .summary-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #f0f0f0;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .summary-row:last-of-type {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .summary-row.total {
+      border-bottom: none !important;
+      padding-bottom: 0 !important;
+      border-top: 2px solid #f0f0f0;
+      padding-top: 15px;
+      margin-top: 15px;
+    }
+
+    .summary-row.total .label {
+      font-weight: 700;
+      color: #333;
+      font-size: 16px;
+    }
+
+    .summary-row.total .value {
+      font-weight: 700;
+      color: #02A237;
+      font-size: 22px;
+    }
+
+    .checkout-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #02A237 0%, #018B2E 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 25px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .checkout-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(2, 162, 55, 0.3);
+    }
+
+    .checkout-btn:active {
+      transform: translateY(0);
+    }
+
+    .checkout-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .continue-shopping {
+      width: 100%;
+      padding: 12px;
+      background: white;
+      color: #02A237;
+      border: 2px solid #02A237;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+      text-transform: uppercase;
+    }
+
+    .continue-shopping:hover {
+      background: #f5f5f5;
+    }
+
+    .promo-input {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .promo-input input {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .promo-input button {
+      padding: 10px 15px;
+      background: #f0f0f0;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 12px;
+      transition: background 0.3s;
+    }
+
+    .promo-input button:hover {
+      background: #e0e0e0;
+    }
+
+    .security-info {
+      text-align: center;
+      font-size: 12px;
+      color: #999;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid #f0f0f0;
+    }
+
+    .security-info i {
+      color: #02A237;
+      margin-right: 5px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    @media (max-width: 768px) {
+      .cart-content {
+        grid-template-columns: 1fr;
+      }
+
+      .cart-summary {
+        position: static;
+      }
+
+      .cart-item {
+        grid-template-columns: 80px 1fr;
+        gap: 15px;
+      }
+
+      .quantity-control {
+        grid-column: 1 / -1;
+        margin-top: 10px;
+      }
+
+      .cart-header h1 {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <script src="js/ui.js"></script>
+  <header class="navbar-professional" style="padding: 0;">
+    <div class="navbar-container">
+      <div class="navbar-brand">
+        <a href="index.html"><h1>Bella Vista Bistro</h1></a>
+      </div>
+      <ul class="navbar-menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart <span class="cart-count">0</span></a></li>
+        <li id="authLinkContainer">
+          <a href="login.html" class="btn-auth">Login</a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="cart-wrapper">
+    <div class="cart-header">
+      <h1><i class="fas fa-shopping-cart"></i> Shopping Cart</h1>
+      <p>Review your items and proceed to checkout</p>
+    </div>
+
+    <div id="cart-container">
+      <div id="cart-empty" class="empty-state">
+        <i class="fas fa-shopping-cart"></i>
+        <h2 style="color: #333; margin: 20px 0; font-size: 24px;">Your Cart is Empty</h2>
+        <p style="color: #666; margin-bottom: 30px;">Looks like you haven't added anything yet. Start shopping!</p>
+        <a href="menu.html" style="display: inline-block; padding: 12px 30px; background: #02A237; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: background 0.3s;">
+          <i class="fas fa-utensils"></i> Browse Menu
+        </a>
+      </div>
+      
+      <div class="cart-content" id="cart-full" style="display: none;">
+        <div class="cart-items">
+          <div id="cart-list"></div>
+        </div>
+        
+        <div class="cart-summary">
+          <div class="summary-title">
+            <i class="fas fa-receipt"></i> Order Summary
+          </div>
+          
+          <div class="summary-row">
+            <span class="label">Subtotal</span>
+            <span class="value">$<span id="subtotal">0.00</span></span>
+          </div>
+          
+          <div class="summary-row">
+            <span class="label">Delivery</span>
+            <span class="value">$<span id="delivery">0.00</span></span>
+          </div>
+          
+          <div class="summary-row total">
+            <span class="label">Total</span>
+            <span class="value">$<span id="cart-total">0.00</span></span>
+          </div>
+          
+          <button id="cart-checkout" class="checkout-btn">
+            <i class="fas fa-lock"></i> Proceed to Checkout
+          </button>
+          
+          <button id="continue-shopping" class="continue-shopping">
+            <i class="fas fa-arrow-left"></i> Continue Shopping
+          </button>
+          
+          <div class="security-info">
+            <i class="fas fa-shield-alt"></i> Secure checkout powered by modern encryption
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/cart.js"></script>
+  <script>
+    // Render cart items
+    function renderCart() {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const cartList = document.getElementById('cart-list');
+      const cartEmpty = document.getElementById('cart-empty');
+      const cartFull = document.getElementById('cart-full');
+      
+      cartList.innerHTML = '';
+      
+      if (cart.length === 0) {
+        cartEmpty.style.display = 'block';
+        cartFull.style.display = 'none';
+      } else {
+        cartEmpty.style.display = 'none';
+        cartFull.style.display = 'grid';
+        
+        cart.forEach((item, index) => {
+          const itemDiv = document.createElement('div');
+          itemDiv.className = 'cart-item';
+          const subtotal = (item.price * item.qty).toFixed(2);
+          
+          itemDiv.innerHTML = `
+            <div class="cart-item-image">
+              <img src="${item.image || 'https://via.placeholder.com/100'}" alt="${item.name}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22100%22 height=%22100%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2214%22 fill=%22%23999%22 text-anchor=%22middle%22 dy=%22.3em%22%3ENo Image%3C/text%3E%3C/svg%3E'">
+            </div>
+            <div class="cart-item-details">
+              <h3>${item.name}</h3>
+              <p class="cart-item-price">$${item.price.toFixed(2)}</p>
+              <div class="quantity-control">
+                <button class="qty-btn" onclick="updateQty(${index}, ${item.qty - 1})">
+                  <i class="fas fa-minus"></i>
+                </button>
+                <span class="qty-display">${item.qty}</span>
+                <button class="qty-btn" onclick="updateQty(${index}, ${item.qty + 1})">
+                  <i class="fas fa-plus"></i>
+                </button>
+                <button class="remove-btn" onclick="removeFromCart(${index})">
+                  <i class="fas fa-trash"></i> Remove
+                </button>
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 18px; font-weight: 700; color: #02A237;">$${subtotal}</div>
+              <div style="font-size: 12px; color: #999; margin-top: 8px;">x${item.qty}</div>
+            </div>
+          `;
+          
+          cartList.appendChild(itemDiv);
+        });
+        
+        updateTotals();
+      }
+      updateCartCount();
+    }
+
+    function updateQty(index, newQty) {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      if (newQty > 0) {
+        cart[index].qty = newQty;
+        localStorage.setItem('cart', JSON.stringify(cart));
+        renderCart();
+      }
+    }
+
+    function removeFromCart(index) {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      cart.splice(index, 1);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      renderCart();
+    }
+
+    function updateTotals() {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      const delivery = subtotal > 0 ? 5 : 0;
+      const total = subtotal + delivery;
+      
+      document.getElementById('subtotal').textContent = subtotal.toFixed(2);
+      document.getElementById('delivery').textContent = delivery.toFixed(2);
+      document.getElementById('cart-total').textContent = total.toFixed(2);
+    }
+
+    // Continue shopping
+    document.getElementById('continue-shopping').addEventListener('click', () => {
+      location.href = 'menu.html';
+    });
+
+    // Authentication handling
+    function updateAuthUI() {
+      const token = localStorage.getItem('token');
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const authContainer = document.getElementById('authLinkContainer');
+      
+      if (token && user.id) {
+        const userDisplay = user.role === 'admin' ? `${user.name} (Admin)` : user.name;
+        let html = `<span class="user-menu"><span style="color: white; font-size: 14px;">Hello, ${userDisplay}</span>`;
+        if (user.role === 'admin') {
+          html += `<a href="admin_new.html" class="btn-admin">Admin Panel</a>`;
+        }
+        html += `<button class="btn-logout" onclick="logout()">Logout</button></span>`;
+        authContainer.innerHTML = html;
+      } else {
+        authContainer.innerHTML = '<a href="login.html" class="btn-auth">Login / Register</a>';
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      localStorage.removeItem('expiresAt');
+      updateAuthUI();
+      location.reload();
+    }
+
+    function updateCartCount() {
+      try {
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        const count = cart.reduce((sum, item) => sum + (item.qty || 0), 0);
+        document.querySelectorAll('.cart-count').forEach(el => {
+          el.textContent = count;
+        });
+      } catch (e) {
+        console.log('Cart count update error');
+      }
+    }
+
+    // Initialize page
+    renderCart();
+    updateAuthUI();
+    updateCartCount();
+    window.addEventListener('storage', () => {
+      renderCart();
+      updateAuthUI();
+      updateCartCount();
+    });
+  </script>
+</body>
+</html>

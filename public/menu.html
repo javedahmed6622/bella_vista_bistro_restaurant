@@ -1,0 +1,193 @@
+
+
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Menu</title>
+  <!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+        <link rel="stylesheet" type="text/css" href="css/menu.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+</head>
+<body>
+<!-- Professional Navigation Header -->
+<nav class="navbar-professional">
+  <div class="navbar-container">
+    <div class="navbar-brand">
+      <a href="index.html"><h1>Bella Vista Bistro</h1></a>
+    </div>
+    <ul class="navbar-menu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart <span class="cart-count">0</span></a></li>
+      <li id="authLinkContainer">
+        <a href="login.html" class="btn-auth">Login</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<br><br><br>
+<center>
+  
+<h1 style="font-size: 30px;">Our menu</h1>
+<hr>
+
+<br>
+<br>
+<div class="container1" style="background-color:#FAFAFA;">
+  <div class="container-img" data-name="Pizza" data-price="25" data-img="html_them/img/pizza.webp">
+    <img src="html_them/img/pizza.webp" alt="Pizza" onclick="openModal(this.src)">
+    <div class="item-info"><div><p style="margin:0;color:#e53935;font-weight:700;">Pizza</p><p class="price">25/-</p></div><button class="add-btn" data-name="Pizza" data-price="25" data-img="html_them/img/pizza.webp">Add to cart</button></div>
+  </div>
+  <div class="container-img" data-name="Veg Pizza" data-price="22" data-img="html_them/img/pizza.webp">
+    <img src="html_them/img/pizza.webp" alt="Veg Pizza" onclick="openModal(this.src)">
+    <div class="item-info"><div><p style="margin:0;color:#e53935;font-weight:700;">Veg Pizza</p><p class="price">22/-</p></div><button class="add-btn" data-name="Veg Pizza" data-price="22" data-img="html_them/img/pizza.webp">Add to cart</button></div>
+  </div>
+  <div class="container-img" data-name="Cheese Pizza" data-price="28" data-img="html_them/img/pizza.webp">
+    <img src="html_them/img/pizza.webp" alt="Cheese Pizza" onclick="openModal(this.src)">
+    <div class="item-info"><div><p style="margin:0;color:#e53935;font-weight:700;">Cheese Pizza</p><p class="price">28/-</p></div><button class="add-btn" data-name="Cheese Pizza" data-price="28" data-img="html_them/img/pizza.webp">Add to cart</button></div>
+  </div>
+  <div class="container-img" data-name="Chocolate Cake" data-price="18" data-img="html_them/img/cake3.jpg">
+    <img src="html_them/img/cake3.jpg" alt="Cake" onclick="openModal(this.src)">
+    <div class="item-info"><div><p style="margin:0;color:#e53935;font-weight:700;">Chocolate Cake</p><p class="price">18/-</p></div><button class="add-btn" data-name="Chocolate Cake" data-price="18" data-img="html_them/img/cake3.jpg">Add to cart</button></div>
+  </div>
+  <div class="container-img" data-name="Sandwich" data-price="12" data-img="html_them/img/sandwich2.jpg">
+    <img src="html_them/img/sandwich2.jpg" alt="Sandwich" onclick="openModal(this.src)">
+    <div class="item-info"><div><p style="margin:0;color:#e53935;font-weight:700;">Sandwich</p><p class="price">12/-</p></div><button class="add-btn" data-name="Sandwich" data-price="12" data-img="html_them/img/sandwich2.jpg">Add to cart</button></div>
+  </div>
+  <div class="container-img" data-name="Strawberry Cake" data-price="20" data-img="html_them/img/cake3.jpg">
+    <img src="html_them/img/cake3.jpg" alt="Cake" onclick="openModal(this.src)">
+    <div class="item-info"><div><p style="margin:0;color:#e53935;font-weight:700;">Strawberry Cake</p><p class="price">20/-</p></div><button class="add-btn" data-name="Strawberry Cake" data-price="20" data-img="html_them/img/cake3.jpg">Add to cart</button></div>
+  </div>
+  <div class="container-img" data-name="Blueberry Cake" data-price="22" data-img="html_them/img/cake3.jpg">
+    <img src="html_them/img/cake3.jpg" alt="Cake" onclick="openModal(this.src)">
+    <div class="item-info"><div><p style="margin:0;color:#e53935;font-weight:700;">Blueberry Cake</p><p class="price">22/-</p></div><button class="add-btn" data-name="Blueberry Cake" data-price="22" data-img="html_them/img/cake3.jpg">Add to cart</button></div>
+  </div>
+</div>
+
+<!-- image modal -->
+<div class="image-modal" id="imageModal">
+  <div class="modal-content">
+    <div class="close" id="modalClose">&times;</div>
+    <img id="modalImg" src="" alt="">
+  </div>
+</div>
+
+<!-- cart float button -->
+<div class="cart-float" id="cartBtn">Cart (<span id="cartCount">0</span>)</div>
+
+<script src="js/cart.js"></script>
+<script>
+// Authentication handling
+function updateAuthUI() {
+  const token = localStorage.getItem('token');
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const authContainer = document.getElementById('authLinkContainer');
+  
+  if (token && user.id) {
+    const userDisplay = user.role === 'admin' ? `${user.name} (Admin)` : user.name;
+    let html = `<span class=\"user-menu\"><span style=\"color: white; font-size: 14px;\">Hello, ${userDisplay}</span>`;
+    if (user.role === 'admin') {
+      html += `<a href=\"admin_new.html\" class=\"btn-admin\">Admin Panel</a>`;
+    }
+    html += `<button class=\"btn-logout\" onclick=\"logout()\">Logout</button></span>`;
+    authContainer.innerHTML = html;
+  } else {
+    authContainer.innerHTML = '<a href=\"login.html\" class=\"btn-auth\">Login / Register</a>';
+  }
+}
+
+function logout() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  localStorage.removeItem('expiresAt');
+  updateAuthUI();
+  window.location.href = 'menu.html';
+}
+
+updateAuthUI();
+
+// Newsletter form
+document.querySelector('.email-box form')?.addEventListener('submit', async function(e){ 
+  e.preventDefault(); 
+  const email = this.querySelector('input[type=\"email\"]').value;
+  try {
+    const response = await fetch('/api/newsletter/subscribe', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ email })
+    });
+    if (response.ok) {
+      alert('Thanks for subscribing!');
+      this.reset();
+    } else {
+      alert('Failed to subscribe');
+    }
+  } catch(e) {
+    console.log('Offline mode');
+    this.reset();
+  }
+});
+
+document.getElementById('year2').textContent = new Date().getFullYear();
+</script>
+  </form>
+  </div>
+</div>
+</center>
+<center>
+<footer class="footer" role="contentinfo">
+  <div class="footer-wrap">
+    <div class="footer-col about">
+      <h3>Bella Vista Bistro</h3>
+      <p>Delicious food crafted with love. Fresh ingredients, warm service and a cozy atmosphere — perfect for family and friends.</p>
+      <div class="social-links">
+        <a class="facebook" href="https://facebook.com/yourpage" target="_blank" rel="noreferrer"><i class="fa fa-facebook"></i></a>
+        <a class="instagram" href="https://instagram.com/yourpage" target="_blank" rel="noreferrer"><i class="fa fa-instagram"></i></a>
+        <a class="twitter" href="https://twitter.com/yourpage" target="_blank" rel="noreferrer"><i class="fa fa-twitter"></i></a>
+        <a class="linkedin" href="https://linkedin.com/yourpage" target="_blank" rel="noreferrer"><i class="fa fa-linkedin"></i></a>
+        <a class="youtube" href="https://youtube.com/yourchannel" target="_blank" rel="noreferrer"><i class="fa fa-youtube"></i></a>
+      </div>
+    </div>
+    <div class="footer-col quick-links">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col contact-info">
+      <h3>Contact</h3>
+      <p><i class="fa fa-map-marker"></i> 123 Main Street, City</p>
+      <p><i class="fa fa-envelope"></i> info@bellavista.com</p>
+      <p><i class="fa fa-phone"></i> +880123456789</p>
+    </div>
+    <div class="footer-col newsletter">
+      <h3>Newsletter</h3>
+      <form id="footer-news-form-2">
+        <input type="email" name="email" placeholder="Enter your email" required>
+        <button type="submit">Subscribe</button>
+        <small>Subscribe for updates and exclusive offers.</small>
+      </form>
+    </div>
+  </div>
+  <div class="footer-bottom">&copy; <span id="year2"></span> Bella Vista Bistro — All rights reserved</div>
+</footer>
+
+<script>
+document.getElementById('footer-news-form-2')?.addEventListener('submit', function(e){ e.preventDefault(); alert('Thanks — newsletter subscribed (placeholder)'); });
+document.getElementById('year2').textContent = new Date().getFullYear();
+</script>
+</body>
+
+</html>

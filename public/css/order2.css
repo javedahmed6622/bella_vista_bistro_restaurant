@@ -1,0 +1,80 @@
+.order-container{
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 40px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.order-form form{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.order-form input[type="text"],
+.order-form input[type="email"],
+.order-form input[type="number"],
+.order-form select,
+.order-form textarea{
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.order-form input:focus,
+.order-form select:focus,
+.order-form textarea:focus{
+    outline: none;
+    border-color: #02A237;
+    box-shadow: 0 0 5px rgba(2, 162, 55, 0.3);
+}
+
+.order-form h3{
+    color: #02A237;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.order-form label{
+    display: flex;
+    align-items: center;
+    margin: 8px 0;
+    cursor: pointer;
+}
+
+.order-form input[type="checkbox"]{
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.order-form select{
+    cursor: pointer;
+}
+
+.order-form input[type="submit"]{
+    background-color: #02A237;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+    padding: 15px;
+    margin-top: 20px;
+}
+
+.order-form input[type="submit"]:hover{
+    background-color: #018a2b;
+}
+
+@media (max-width: 768px){
+    .order-container{
+        padding: 20px;
+    }
+}

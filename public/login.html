@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Bella Vista Bistro</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    .login-wrapper {
+      width: 100%;
+      max-width: 450px;
+      margin: 100px auto 50px;
+      padding: 0 20px;
+    }
+
+    .auth-container {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      animation: slideUp 0.5s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .auth-header {
+      background: linear-gradient(135deg, #02A237 0%, #018B2E 100%);
+      padding: 40px 30px;
+      color: white;
+      text-align: center;
+    }
+
+    .auth-header h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .auth-header p {
+      font-size: 14px;
+      opacity: 0.95;
+      font-weight: 500;
+    }
+
+    .auth-form {
+      padding: 40px 30px;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+      position: relative;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 10px;
+      color: #333;
+      font-weight: 600;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 15px;
+      color: #02A237;
+      font-size: 16px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 14px 15px 14px 45px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.3s ease;
+      background: #f9f9f9;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #02A237;
+      background: white;
+      box-shadow: 0 0 0 4px rgba(2, 162, 55, 0.1);
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: #02A237;
+    }
+
+    .checkbox-group label {
+      margin: 0;
+      color: #666;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      text-transform: none;
+      letter-spacing: normal;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #02A237 0%, #018B2E 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(2, 162, 55, 0.3);
+    }
+
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+
+    .submit-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .alert {
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      display: none;
+      border-left: 4px solid;
+      animation: slideDown 0.3s ease-out;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .alert.success {
+      background: #d4edda;
+      color: #155724;
+      border-color: #28a745;
+      display: block;
+    }
+
+    .alert.error {
+      background: #f8d7da;
+      color: #721c24;
+      border-color: #f5c6cb;
+      display: block;
+    }
+
+    .auth-footer {
+      text-align: center;
+      padding: 0;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 2px solid #f0f0f0;
+    }
+
+    .auth-footer p {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .auth-footer a {
+      color: #02A237;
+      text-decoration: none;
+      font-weight: 700;
+      transition: color 0.3s;
+    }
+
+    .auth-footer a:hover {
+      color: #018B2E;
+    }
+
+    .forgot-password {
+      text-align: right;
+      margin-bottom: 25px;
+    }
+
+    .forgot-password a {
+      color: #02A237;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 13px;
+      transition: color 0.3s;
+    }
+
+    .forgot-password a:hover {
+      color: #018B2E;
+    }
+
+
+
+    @media (max-width: 600px) {
+      .auth-container {
+        border-radius: 10px;
+      }
+
+      .auth-header {
+        padding: 30px 20px;
+      }
+
+      .auth-form {
+        padding: 30px 20px;
+      }
+
+      .auth-header h1 {
+        font-size: 26px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Professional Navigation Header -->
+  <header class="navbar-professional" style="padding: 0;">
+    <div class="navbar-container">
+      <div class="navbar-brand">
+        <a href="index.html"><h1>Bella Vista Bistro</h1></a>
+      </div>
+      <ul class="navbar-menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart <span class="cart-count">0</span></a></li>
+        <li id="authLinkContainer">
+          <a href="login.html" class="btn-auth">Login</a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Login Container -->
+  <div class="login-wrapper" style="margin-top: 80px;">
+    <div class="auth-container">
+      <div class="auth-header">
+        <h1>Welcome Back!</h1>
+        <p>Login to your account</p>
+      </div>
+      
+      <div class="auth-form">
+        <div id="alert-container"></div>
+        
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="email"><i class="fas fa-envelope"></i> Email Address</label>
+            <div class="input-wrapper">
+              <i class="fas fa-envelope input-icon"></i>
+              <input type="email" id="email" name="email" placeholder="your@email.com" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="password"><i class="fas fa-lock"></i> Password</label>
+            <div class="input-wrapper">
+              <i class="fas fa-lock input-icon"></i>
+              <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+          </div>
+          
+          <div class="checkbox-group">
+            <input type="checkbox" id="rememberMe" name="rememberMe">
+            <label for="rememberMe">Remember me for 7 days</label>
+          </div>
+          
+          <button type="submit" class="submit-btn">
+            <i class="fas fa-sign-in-alt"></i> Login
+          </button>
+        </form>
+        
+        <div class="auth-footer">
+          <p>Don't have an account? <a href="register.html">Register here</a></p>
+          <p style="margin-top: 15px; font-size: 12px;">
+            <a href="index.html" style="font-weight: 500;">← Back to Home</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Professional Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer-wrap">
+      <div class="footer-col about">
+        <h3>Bella Vista Bistro</h3>
+        <p>Delicious food crafted with love. Fresh ingredients, warm service and a cozy atmosphere — perfect for family and friends.</p>
+        <div class="social-links">
+          <a class="facebook" href="https://facebook.com/yourpage" target="_blank" rel="noreferrer"><i class="fa fa-facebook"></i></a>
+          <a class="instagram" href="https://instagram.com/yourpage" target="_blank" rel="noreferrer"><i class="fa fa-instagram"></i></a>
+          <a class="twitter" href="https://twitter.com/yourpage" target="_blank" rel="noreferrer"><i class="fa fa-twitter"></i></a>
+          <a class="youtube" href="https://youtube.com/yourchannel" target="_blank" rel="noreferrer"><i class="fa fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-col quick-links">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="cart.html">Cart</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col contact-info">
+        <h3>Contact</h3>
+        <p><i class="fa fa-map-marker"></i> 123 Main Street, City</p>
+        <p><i class="fa fa-envelope"></i> info@bellavista.com</p>
+        <p><i class="fa fa-phone"></i> +880123456789</p>
+      </div>
+      <div class="footer-col newsletter">
+        <h3>Newsletter</h3>
+        <form id="footer-news-form">
+          <input type="email" name="email" placeholder="Enter your email" required>
+          <button type="submit">Subscribe</button>
+          <small>Subscribe for updates and exclusive offers.</small>
+        </form>
+      </div>
+    </div>
+    <div class="footer-bottom">&copy; <span id="year-footer"></span> Bella Vista Bistro — All rights reserved</div>
+  </footer>
+
+  <script>
+    document.getElementById('year-footer').textContent = new Date().getFullYear();
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const rememberMe = document.getElementById('rememberMe').checked;
+      
+      const submitBtn = document.querySelector('.submit-btn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+      
+      try {
+        const response = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, password })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('user', JSON.stringify(data.user));
+          
+          if (rememberMe) {
+            const expiresAt = new Date().getTime() + (7 * 24 * 60 * 60 * 1000);
+            localStorage.setItem('expiresAt', expiresAt);
+          }
+          
+          showAlert('Login successful! Redirecting...', 'success');
+          
+          setTimeout(() => {
+            if (data.user.role === 'admin') {
+              location.href = 'admin_new.html';
+            } else {
+              location.href = 'index.html';
+            }
+          }, 1200);
+        } else {
+          showAlert(data.message || 'Login failed', 'error');
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+        }
+      } catch (error) {
+        showAlert('Error during login: ' + error.message, 'error');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+      }
+    });
+
+    // Newsletter form handler
+    document.getElementById('footer-news-form')?.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const email = this.querySelector('input[type="email"]').value;
+      
+      try {
+        const response = await fetch('/api/newsletter/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        
+        if (response.ok) {
+          alert('Thank you for subscribing!');
+          this.reset();
+        } else {
+          alert('Email already subscribed or invalid.');
+        }
+      } catch (error) {
+        console.log('Newsletter subscription error');
+        this.reset();
+      }
+    });
+
+    // Authentication UI handler
+    function updateAuthUI() {
+      const token = localStorage.getItem('token');
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const authContainer = document.getElementById('authLinkContainer');
+      
+      if (token && user.id) {
+        const userDisplay = user.role === 'admin' ? `${user.name} (Admin)` : user.name;
+        let html = `<span class="user-menu"><span style="color: white; font-size: 14px;">Hello, ${userDisplay}</span>`;
+        if (user.role === 'admin') {
+          html += `<a href="admin_new.html" class="btn-admin">Admin Panel</a>`;
+        }
+        html += `<button class="btn-logout" onclick="logout()">Logout</button></span>`;
+        authContainer.innerHTML = html;
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      localStorage.removeItem('expiresAt');
+      updateAuthUI();
+      location.reload();
+    }
+
+    function updateCartCount() {
+      try {
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        const count = cart.reduce((sum, item) => sum + (item.qty || 0), 0);
+        document.querySelectorAll('.cart-count').forEach(el => {
+          el.textContent = count;
+        });
+      } catch (e) {
+        console.log('Cart count update error');
+      }
+    }
+
+    function showAlert(message, type) {
+      const alertContainer = document.getElementById('alert-container');
+      const alert = document.createElement('div');
+      alert.className = `alert ${type}`;
+      alert.innerHTML = `<i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'check-circle'}"></i> ${message}`;
+      alertContainer.innerHTML = '';
+      alertContainer.appendChild(alert);
+      alertContainer.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Initialize on page load
+    updateAuthUI();
+    updateCartCount();
+    window.addEventListener('storage', () => {
+      updateAuthUI();
+      updateCartCount();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+/* Contact & Order Form Styles */
+
+.form {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+}
+
+.form input[type="text"],
+.form input[type="email"],
+.form input[type="tel"],
+.form input[type="checkbox"],
+.form select,
+.form textarea {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    margin: 0.8rem 0;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.form input[type="text"]:focus,
+.form input[type="email"]:focus,
+.form input[type="tel"]:focus,
+.form select:focus,
+.form textarea:focus {
+    outline: none;
+    border-color: #02A237;
+    box-shadow: 0 0 8px rgba(2, 162, 55, 0.2);
+}
+
+.form select {
+    cursor: pointer;
+}
+
+.form input[type="checkbox"] {
+    width: auto;
+    margin-right: 0.5rem;
+    display: inline-block;
+}
+
+.form input[type="checkbox"] + span {
+    margin-right: 1rem;
+}
+
+.form textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.form button {
+    width: 100%;
+    padding: 0.8rem 1.5rem;
+    margin-top: 1rem;
+    background-color: #02A237;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 5px 5px 15px rgba(2, 162, 55, 0.2);
+    font-family: 'Poppins', sans-serif;
+}
+
+.form button:hover {
+    background-color: #01821e;
+    transform: translateY(-2px);
+    box-shadow: 5px 8px 20px rgba(2, 162, 55, 0.3);
+}
+
+.form button a {
+    color: white;
+    text-decoration: none;
+}
+
+.form p {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: #f9f9f9;
+    border-left: 4px solid #02A237;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    color: #333;
+    line-height: 1.6;
+}
+
+.form p br {
+    display: block;
+    margin: 0.5rem 0;
+}
+
+/* Contact Page Specific */
+.contact-form-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.contact-info-section {
+    background: #F5F5F5;
+    padding: 2rem;
+    border-radius: 12px;
+}
+
+.contact-info-section h3 {
+    color: #02A237;
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+}
+
+.contact-info-item {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #ddd;
+}
+
+.contact-info-item:last-child {
+    border-bottom: none;
+}
+
+.contact-info-item i {
+    color: #02A237;
+    font-size: 1.3rem;
+    margin-right: 1rem;
+    width: 30px;
+    text-align: center;
+}
+
+.contact-info-item span {
+    color: #7b7b93;
+    font-size: 0.95rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .contact-form-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .form {
+        padding: 1.5rem;
+    }
+
+    .form input[type="text"],
+    .form input[type="email"],
+    .form input[type="tel"],
+    .form select,
+    .form textarea {
+        padding: 0.7rem;
+        font-size: 0.95rem;
+    }
+
+    .form button {
+        padding: 0.7rem 1rem;
+        font-size: 1rem;
+    }
+}

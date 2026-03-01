@@ -63,8 +63,10 @@ document.addEventListener('DOMContentLoaded', () => {
           card.querySelector('.add').addEventListener('click', ()=>{
             const ex = cart.find(c=>c.id===item._id);
             if(ex) ex.qty++;
-            else cart.push({id:item._id,name:item.name,price:item.price||0,qty:1});
+            else cart.push({id:item._id,name:item.name,price:item.price||0,qty:1,image:item.image||''});
             saveCart();
+            // redirect to cart page for user to review
+            location.href = '/cart.html';
           });
         });
       }
@@ -81,13 +83,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Checkout (creates an order with cart items)
   $('checkout-btn')?.addEventListener('click', ()=>{
-    if(cart.length===0) return alert('Cart is empty');
+    if(cart.length===0) return window.ui?.toast('error','Cart is empty');
     const name = prompt('Enter your name for order');
     const email = prompt('Enter your email');
     const order = { customerName: name||'Guest', email: email||'', items: cart.map(c=>({name:c.name,quantity:c.qty})), total: cart.reduce((s,i)=>s+i.price*i.qty,0) };
     fetch('/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(order)})
-      .then(()=>{cart=[];saveCart();alert('Order placed successfully!')})
-      .catch(e=>alert('Error placing order: '+e.message));
+      .then(()=>{cart=[];saveCart();window.ui?.toast('success','Order placed successfully!')})
+      .catch(e=>window.ui?.toast('error','Error placing order'));
   });
 
   // Reservation form submission
@@ -101,8 +103,8 @@ document.addEventListener('DOMContentLoaded', () => {
       guests: parseInt($('res-guests').value,10)
     };
     fetch('/api/reservations',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(reservation)})
-      .then(()=>{alert('Reservation made successfully!');$('reservation-form').reset();})
-      .catch(err=>alert('Error making reservation: '+err.message));
+      .then(()=>{window.ui?.toast('success','Reservation made successfully!');$('reservation-form').reset();})
+      .catch(err=>window.ui?.toast('error','Error making reservation'));
   });
 
   // Contact form (optional: store or send)
@@ -110,8 +112,8 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     const msg = { name: $('contact-name').value, email: $('contact-email').value, message: $('contact-message').value };
     fetch('/api/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(msg)})
-      .then(()=>{alert('Thanks — we received your message!');$('contact-form').reset();})
-      .catch(err=>{alert('Error sending message: '+err.message)});
+      .then(()=>{window.ui?.toast('success','Thanks — we received your message!');$('contact-form').reset();})
+      .catch(err=>{window.ui?.toast('error','Error sending message')});
   });
 
   // Theme toggle

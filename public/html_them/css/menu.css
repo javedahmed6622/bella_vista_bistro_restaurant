@@ -1,0 +1,35 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.container1{
+    border: 0px solid red;
+    width: 80%;
+    height: auto;
+    background-color: #FAFAFA;
+    overflow: hidden;
+}
+.container-img{
+    background-color: white;
+    border: 0px solid green;
+height: 275px;
+width: 350px; 
+float: left;   
+margin: 4px;
+
+box-shadow: 7px 7px 10px gray;
+transition: transform 1s;
+}
+.container-img:hover{
+    transform: scale(1.1);
+}
+.container-img img{
+    width: 95%;
+    height: 180px;
+ 
+}
+.container-img .fa-star{
+font-size: 22px;
+color: orange;
+}

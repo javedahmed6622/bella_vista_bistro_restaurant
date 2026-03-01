@@ -9,64 +9,146 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- Quill rich text editor -->
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 </head>
 <body>
+  <script src="js/ui.js"></script>
+  <!-- Login Modal -->
+  <div id="login-modal" class="modal hidden">
+    <div class="modal-content card" style="max-width:400px;width:100%">
+      <h3>Admin Login</h3>
+      <form id="login-form">
+        <label>Email</label>
+        <input id="login-email" type="email" required autocomplete="username">
+        <label>Password</label>
+        <input id="login-password" type="password" required autocomplete="current-password">
+        <div style="display:flex;gap:0.5rem;justify-content:flex-end;margin-top:1rem">
+          <button type="button" id="login-cancel" class="btn">Cancel</button>
+          <button type="submit" class="btn primary">Login</button>
+        </div>
+      </form>
+    </div>
+  </div>
   <div id="admin-root">
     <aside class="admin-sidebar">
       <div class="admin-brand">
-        <h2>Bella Vista</h2>
+        <h2>Restaurant Admin</h2>
       </div>
       <nav class="admin-nav">
-        <button data-view="overview" class="active">Overview</button>
-        <button data-view="menu">Manage Menu</button>
-        <button data-view="orders">Orders</button>
-        <button data-view="reservations">Reservations</button>
-        <button data-view="messages">Messages</button>
-        <button data-view="users">Users</button>
+        <button data-view="overview" class="nav-item active"><i class="fa fa-chart-line"></i><span>Dashboard</span></button>
+        <button data-view="menu" class="nav-item"><i class="fa fa-utensils"></i><span>Food Items</span></button>
+        <button data-view="orders" class="nav-item"><i class="fa fa-shopping-cart"></i><span>Orders</span></button>
+        <button data-view="messages" class="nav-item"><i class="fa fa-envelope"></i><span>Messages</span></button>
+        <button data-view="settings" class="nav-item"><i class="fa fa-globe"></i><span>Website Settings</span></button>
+        <button data-view="admins" class="nav-item"><i class="fa fa-users"></i><span>Manage Admins</span></button>
       </nav>
-      <div class="admin-footer"><button id="logout-btn" class="btn ghost">Logout</button></div>
+      <div class="admin-footer"><button id="logout-btn" class="btn ghost"><i class="fa fa-sign-out-alt"></i> Logout</button></div>
     </aside>
 
     <main class="admin-main">
       <header class="admin-top">
-        <div class="search">Admin Dashboard</div>
+        <div class="search-wrap">
+          <input type="search" placeholder="Search..." class="search-input">
+        </div>
         <div class="admin-actions">
           <button id="notify-btn" class="icon-btn"><i class="fa fa-bell"></i><span id="notify-count" class="badge hidden">0</span></button>
+          <a href="/cart.html" class="btn small">Cart</a>
+          <div class="admin-user">
+            <span class="user-name">Administrator</span>
+            <img src="https://via.placeholder.com/36" alt="avatar" class="user-avatar">
+          </div>
         </div>
       </header>
 
       <section id="view-overview" class="admin-view">
-        <div class="grid dashboard-cards">
-          <div class="card"><h4>Total Orders</h4><div id="total-orders">0</div></div>
-          <div class="card"><h4>Total Revenue</h4><div id="total-revenue">$0.00</div></div>
-          <div class="card"><h4>Reservations</h4><div id="total-res">0</div></div>
+        <h1 class="page-title">Dashboard</h1>
+        <div class="stats-row">
+          <div class="stat-card card">
+            <div class="stat-left"><div class="stat-icon bg-green"><i class="fa fa-shopping-cart"></i></div></div>
+            <div class="stat-body"><div class="stat-label">Total Orders</div><div id="total-orders" class="stat-value">0</div></div>
+          </div>
+          <div class="stat-card card">
+            <div class="stat-left"><div class="stat-icon bg-green"><i class="fa fa-check-circle"></i></div></div>
+            <div class="stat-body"><div class="stat-label">Completed Orders</div><div id="completed-orders" class="stat-value">0</div></div>
+          </div>
+          <div class="stat-card card">
+            <div class="stat-left"><div class="stat-icon bg-yellow"><i class="fa fa-clock"></i></div></div>
+            <div class="stat-body"><div class="stat-label">Pending Orders</div><div id="pending-orders" class="stat-value">0</div></div>
+          </div>
+          <div class="stat-card card">
+            <div class="stat-left"><div class="stat-icon bg-blue"><i class="fa fa-rupee-sign"></i></div></div>
+            <div class="stat-body"><div class="stat-label">Total Revenue</div><div id="total-revenue" class="stat-value">₹0</div></div>
+          </div>
         </div>
-        <div class="card chart-card"><canvas id="sales-chart"></canvas></div>
+        <div class="card recent-card">
+          <h3 class="premium-title">Recent Orders</h3>
+          <div id="recent-orders" class="muted premium-muted">No orders yet</div>
+        </div>
       </section>
 
+      <!-- other views (menu, orders, reservations, messages, users) remain but hidden by default -->
       <section id="view-menu" class="admin-view hidden">
-        <div class="card">
-          <h3>Add Menu Item</h3>
-          <form id="menu-form">
-            <input id="item-name" placeholder="Name">
-            <input id="item-desc" placeholder="Description">
-            <input id="item-price" type="number" step="0.01" placeholder="Price">
-            <input id="item-category" placeholder="Category">
-            <input id="item-image" placeholder="Image URL">
-            <button type="submit" class="btn primary">Add Item</button>
-          </form>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+          <h1 class="page-title">Food Items</h1>
+          <div>
+            <button id="open-add-item" class="btn primary">+ Add Food Item</button>
+          </div>
         </div>
-        <div id="menu-list" class="grid"></div>
+        <div class="card">
+          <div id="menu-list" class="grid"></div>
+        </div>
+
+        <!-- Add/Edit Item Modal -->
+        <div id="item-modal" class="modal hidden">
+          <div class="modal-content card" style="max-width:780px;width:100%">
+            <h3 id="item-modal-title">Add Food Item</h3>
+            <form id="item-form">
+              <div class="two-col">
+                <div>
+                  <label>Category</label>
+                  <select id="item-category-select">
+                    <option>Starters</option>
+                    <option>Main</option>
+                    <option>Dessert</option>
+                    <option>Beverages</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+                <div>
+                  <label>Name</label>
+                  <input id="item-name-input" required>
+                </div>
+              </div>
+              <label>Description</label>
+              <div id="item-desc-editor" style="height:140px;background:#fff;border-radius:8px"></div>
+              <div class="two-col" style="margin-top:0.5rem">
+                <div>
+                  <label>Price</label>
+                  <input id="item-price-input" type="number" step="0.01" required>
+                </div>
+                <div>
+                  <label>Offer Price (optional)</label>
+                  <input id="item-offer-input" type="number" step="0.01">
+                </div>
+              </div>
+              <div style="margin-top:0.5rem">
+                <label>Image URL</label>
+                <input id="item-image-url" placeholder="https://... or leave blank">
+                <div style="margin-top:0.5rem">or upload image: <input id="item-image-file" type="file" accept="image/*"></div>
+              </div>
+              <div style="display:flex;gap:0.5rem;justify-content:flex-end;margin-top:0.75rem">
+                <button type="button" id="item-cancel" class="btn">Cancel</button>
+                <button type="submit" class="btn primary">Save Item</button>
+              </div>
+            </form>
+          </div>
+        </div>
       </section>
 
       <section id="view-orders" class="admin-view hidden">
         <h3>Orders</h3>
         <div id="orders-list"></div>
-      </section>
-
-      <section id="view-reservations" class="admin-view hidden">
-        <h3>Reservations</h3>
-        <div id="reservations-list"></div>
       </section>
 
       <section id="view-messages" class="admin-view hidden">
@@ -75,8 +157,108 @@
       </section>
 
       <section id="view-users" class="admin-view hidden">
-        <h3>Users</h3>
-        <div id="users-list"></div>
+        <h1 class="page-title">Manage Admins</h1>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+          <div class="admin-search"><input id="admin-search-input" placeholder="Search admins by name or email"></div>
+          <div>
+            <button id="open-add-admin" class="btn primary">+ Add Admin</button>
+          </div>
+        </div>
+        <div id="users-list" class="grid"></div>
+
+        <!-- Add/Edit Admin Modal -->
+        <div id="admin-modal" class="modal hidden">
+          <div class="modal-content card" style="max-width:640px;width:100%">
+            <h3 id="admin-modal-title">Add Admin</h3>
+            <form id="admin-form">
+              <div class="two-col">
+                <div>
+                  <label>Name</label>
+                  <input id="admin-name" required>
+                </div>
+                <div>
+                  <label>Email</label>
+                  <input id="admin-email" type="email" required>
+                </div>
+              </div>
+              <div class="two-col" style="margin-top:0.5rem">
+                <div>
+                  <label>Password</label>
+                  <input id="admin-password" type="password" placeholder="Leave blank to keep current">
+                </div>
+                <div>
+                  <label>Role</label>
+                  <select id="admin-role"><option>admin</option><option>editor</option></select>
+                </div>
+              </div>
+              <div style="margin-top:0.5rem">
+                <label>Avatar URL</label>
+                <input id="admin-avatar" placeholder="https://...">
+                <div style="margin-top:0.5rem">or upload avatar: <input id="admin-avatar-file" type="file" accept="image/*"></div>
+              </div>
+              <div style="display:flex;gap:0.5rem;justify-content:flex-end;margin-top:0.75rem">
+                <button type="button" id="admin-cancel" class="btn">Cancel</button>
+                <button type="submit" class="btn primary">Save Admin</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+      
+      <section id="view-settings" class="admin-view hidden">
+        <h1 class="page-title">Website Settings</h1>
+        <div class="settings-tabs">
+          <button data-tab="general" class="active">General</button>
+          <button data-tab="contact">Contact</button>
+          <button data-tab="seo">SEO</button>
+        </div>
+        <div class="card settings-card">
+          <form id="settings-form">
+            <div data-panel="general">
+              <label>Restaurant Name</label>
+              <input id="setting-name" type="text" placeholder="Our Restaurant">
+
+              <label>Restaurant Description</label>
+              <input id="setting-desc" type="text" placeholder="Short description">
+
+              <label>About Us</label>
+              <textarea id="setting-about" rows="4" placeholder="About the restaurant"></textarea>
+
+              <div style="margin-top:0.5rem" class="toggle"><label>Enable Reservations</label><input id="setting-enable-res" type="checkbox"></div>
+              <div style="margin-top:0.5rem" class="toggle"><label>Show Testimonials</label><input id="setting-show-test" type="checkbox"></div>
+            </div>
+
+            <div data-panel="contact" style="display:none;margin-top:0.5rem">
+              <label>Address</label>
+              <textarea id="setting-address" rows="3" placeholder="Address"></textarea>
+
+              <div class="two-col">
+                <div>
+                  <label>Phone</label>
+                  <input id="setting-phone" type="text" placeholder="Phone">
+                </div>
+                <div>
+                  <label>Email</label>
+                  <input id="setting-email" type="email" placeholder="Email">
+                </div>
+              </div>
+
+              <label>Opening Hours</label>
+              <input id="setting-hours" type="text" placeholder="10:00 AM - 11:00 PM">
+            </div>
+
+            <div data-panel="seo" style="display:none;margin-top:0.5rem">
+              <label>SEO Title</label>
+              <input id="setting-seo-title" type="text" placeholder="Page title for SEO">
+              <label>SEO Description</label>
+              <textarea id="setting-seo-desc" rows="3" placeholder="Meta description"></textarea>
+            </div>
+
+            <div style="margin-top:0.75rem;display:flex;justify-content:flex-end">
+              <button type="submit" class="btn primary" id="settings-save">Save Settings</button>
+            </div>
+          </form>
+        </div>
       </section>
     </main>
   </div>
@@ -100,6 +282,7 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
   <script src="js/admin.js"></script>
 </body>
 </html>

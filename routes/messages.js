@@ -24,4 +24,14 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
+// Admin: delete message
+router.delete('/:id', auth, async (req, res) => {
+  try {
+    await Message.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Message deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;

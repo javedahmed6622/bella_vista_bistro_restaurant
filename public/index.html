@@ -1,153 +1,338 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bella Vista Bistro</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <meta name="theme-color" content="#ffffff">
+    <title>Bella Vista Bistro</title>
+    <!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+<!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-  <header class="site-header">
-    <div class="container header-inner">
-      <div class="brand">
-        <h1>Bella Vista Bistro</h1>
-        <p class="tag">A Taste Of Elegance</p>
-      </div>
-      <nav class="main-nav">
-        <a href="#menu">Menu</a>
-        <a href="#order">Order</a>
-        <a href="#reserve">Reserve</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
-        <a href="/admin.html" class="btn small ghost">Admin</a>
-        <button id="theme-toggle" aria-label="Toggle theme" class="icon-btn"><i class="fa fa-moon"></i></button>
-      </nav>
+<!-- Professional Navigation Header -->
+<nav class="navbar-professional">
+  <div class="navbar-container">
+    <div class="navbar-brand">
+      <a href="index.html"><h1>Bella Vista Bistro</h1></a>
     </div>
-  </header>
+    <ul class="navbar-menu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart <span class="cart-count">0</span></a></li>
+      <li id="authLinkContainer">
+        <a href="login.html" class="btn-auth">Login</a>
+      </li>
+    </ul>
+  </div>
+</nav>
 
-  <section id="home" class="hero">
-    <div class="hero-inner container">
-      <div class="hero-left">
-        <h2>Fine Dining. Exceptional Flavour.</h2>
-        <p>Join us at Bella Vista Bistro for an unforgettable culinary experience crafted by our head chef.</p>
-        <div class="hero-ctas">
-          <a href="#order" class="btn primary">Order Now</a>
-          <a href="#reserve" class="btn ghost">Reserve Table</a>
-        </div>
-      </div>
-      <div class="hero-right">
-        <img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=8b0f2f4f8d5d4a3b2a6f3d5b6a9a1f2c" alt="Delicious food banner">
+<div class="container">
+<div class="container-left">
+<h1 style="font-family: pacifico; font-size: 40px;">
+ <span >Let's </span>
+ Eat
+ <span >Together</span> 
+</h1>
+<p  style="font-family: pacifico; font-size: 30px;">The Best Restautant</p>
+<br>
+
+<a class="btn" href="menu.html" style="background-color: orange; color: #fff; padding:10px 18px; border-radius:6px; text-decoration:none; margin-right:10px;">View Menu</a>
+<a class="btn" href="menu.html" style="background-color: #02A237; color: #fff; padding:10px 18px; border-radius:6px; text-decoration:none;">Order Now</a>
+<br>
+<img src="html_them/img/eatting.jpg" width="35%" style="margin-top: 5%;">
+</div>
+<div class="container-right">
+<img src="html_them/img/biriyani.jpg">
+
+
+</div>
+</div>
+<!--code for why choose us-->
+<center>
+<h1 style="font-size: 30px;">Why choose Us?</h1>
+<hr>
+<br>
+<br>
+<br>
+
+<div class="featured-outer">
+  <div class="featured-icon">
+    <i class="fa fa-cutlery" style="color: orange;"></i>
+    
+    <p>Fresh Food</p>
+  </div>
+  <div class="featured-icon">
+    <i class="fa fa-clock-o" style="color: green;"></i>
+    <p>24x7</p>
+  </div>
+  <div class="featured-icon">
+    <i class="fa fa-motorcycle" style="color: orange;"></i>
+    <p>Fast Delivery</p>
+  </div>
+  
+  <div class="featured-icon">
+    <i class="fa fa-birthday-cake" style="color: green;"></i>
+    <p>Birthday Space</p>
+  </div>
+<div class="featured-icon">
+    <i class="fa fa-star" style="color: orange;"></i>
+    <p>259 Reviews</p>
+  </div>
+</div>
+</center>
+<!--code for dynamic gallery featured-->
+<center>
+  <br>
+  <br>
+<h1 style="font-size: 30px;">Featured Food Iteam</h1>
+<hr>
+<br>
+<br>
+<br>
+<div class="featured-outer1">
+  <div class="featured-img">
+    <img src="html_them/img/pastra.jpg">
+  </div>
+ <div class="featured-img">
+    <img src="html_them/img/pizza.webp">
+  </div>
+   <div class="featured-img">
+    <img src="html_them/img/pasta2.jpg">
+  </div>
+   <div class="featured-img">
+    <img src="html_them/img/cake2.jpg">
+  </div>
+  <div class="featured-img">
+    <img src="html_them/img/jouce.jpg">
+  </div>
+  <div class="featured-img">
+    <img src="html_them/img/sandwich2.jpg">
+  </div>
+  <div class="featured-img">
+    <img src="html_them/img/ppp.webp">
+  </div>
+</div>
+</center>
+
+
+
+<center>
+  
+<h1 style="font-size: 30px;">Our Speciality</h1>
+<hr>
+
+<br>
+<br>
+<div class="content">
+  <div class="left">
+<img src="html_them/img/cake3.jpg">
+  </div>
+  <div class="right">
+    <p>Looking for that perfect 1280x720 pasta shot? Here are some high-quality options:
+
+    Classic Spaghetti: High-definition images of spaghetti with rich tomato sauce and fresh basil.
+    Assorted Varieties: Wallpapers featuring different shapes like penne, fusilli, and farfalle in artistic arrangements.
+    Professional Styling: Stock photos optimized for web use, often available in the 16:9 aspect ratio you need. 
+<br><br>
+If you're using these for a project, you can find more specific dimensions and free downloads on platforms like Pixabay, Unsplash, and Peakpx. 
+Do you need specific types of pasta (like Carbonara or Pesto) or a different file format (like PNG or mobile wallpaper)
+    </p>
+</div>
+</div>
+</center>
+<br>
+<br>
+<center>
+<div class="content">
+ 
+  <div class="right">
+    <p>Looking for that perfect 1280x720 pasta shot? Here are some high-quality options:
+
+    Classic Spaghetti: High-definition images of spaghetti with rich tomato sauce and fresh basil.
+    Assorted Varieties: Wallpapers featuring different shapes like penne, fusilli, and farfalle in artistic arrangements.
+    Professional Styling: Stock photos optimized for web use, often available in the 16:9 aspect ratio you need. 
+<br><br>
+If you're using these for a project, you can find more specific dimensions and free downloads on platforms like Pixabay, Unsplash, and Peakpx. 
+Do you need specific types of pasta (like Carbonara or Pesto) or a different file format (like PNG or mobile wallpaper)
+    </p>
+</div>
+ <div class="left">
+<img src="html_them/img/cake2.jpg">
+  </div>
+</div>
+</center>
+<br>
+<br>
+<center>
+<div class="content">
+  <div class="left">
+<img src="html_them/img/sandwich3.jpg">
+  </div>
+  <div class="right">
+    <p>Looking for that perfect 1280x720 pasta shot? Here are some high-quality options:
+
+    Classic Spaghetti: High-definition images of spaghetti with rich tomato sauce and fresh basil.
+    Assorted Varieties: Wallpapers featuring different shapes like penne, fusilli, and farfalle in artistic arrangements.
+    Professional Styling: Stock photos optimized for web use, often available in the 16:9 aspect ratio you need. 
+<br><br>
+If you're using these for a project, you can find more specific dimensions and free downloads on platforms like Pixabay, Unsplash, and Peakpx. 
+Do you need specific types of pasta (like Carbonara or Pesto) or a different file format (like PNG or mobile wallpaper)
+    </p>
+</div>
+</div>
+</center>
+<center>
+  <br><br>
+<h1 style="font-size: 30px;">Subscribe For News Letter</h1>
+<hr>
+
+<br>
+<br>
+<div class="newslatter">
+  <div class="email-box">
+  <form>
+    <input type="email" placeholder="write your email address here...">
+    <input type="Submit">
+  </form>
+  </div>
+</div>
+</center>
+<footer class="footer" role="contentinfo">
+  <div class="footer-wrap">
+    <div class="footer-col about">
+      <h3>Bella Vista Bistro</h3>
+      <p>Delicious food crafted with love. Fresh ingredients, warm service and a cozy atmosphere — perfect for family and friends.</p>
+      <div class="social-links">
+        <a class="facebook" href="https://facebook.com/yourpage" target="_blank" rel="noreferrer"><i class="fa fa-facebook"></i></a>
+        <a class="instagram" href="https://instagram.com/yourpage" target="_blank" rel="noreferrer"><i class="fa fa-instagram"></i></a>
+        <a class="twitter" href="https://twitter.com/yourpage" target="_blank" rel="noreferrer"><i class="fa fa-twitter"></i></a>
+        <a class="linkedin" href="https://linkedin.com/yourpage" target="_blank" rel="noreferrer"><i class="fa fa-linkedin"></i></a>
+        <a class="youtube" href="https://youtube.com/yourchannel" target="_blank" rel="noreferrer"><i class="fa fa-youtube"></i></a>
       </div>
     </div>
-  </section>
-
-  <section id="menu" class="section">
-    <div class="container">
-      <div class="section-head">
-        <h2>Our Menu</h2>
-        <div id="menu-filters" class="filters"></div>
-      </div>
-      <div id="menu-items" class="grid"></div>
+    <div class="footer-col quick-links">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
     </div>
-  </section>
-
-  <section id="order" class="section">
-    <div class="container">
-      <h2>Order</h2>
-      <div class="order-layout">
-        <div class="order-left">
-          <p>Select items from the menu and add to your cart.</p>
-          <div id="cart-empty" class="muted">Your cart is empty .</div>
-        </div>
-        <aside id="cart" class="cart">
-          <h3>Your Cart</h3>
-          <div id="cart-items"></div>
-          <div class="cart-total">Total: $<span id="cart-total">0.00</span></div>
-          <button id="checkout-btn" class="btn primary">Checkout</button>
-        </aside>
-      </div>
+    <div class="footer-col contact-info">
+      <h3>Contact</h3>
+      <p><i class="fa fa-map-marker"></i> 123 Main Street, City</p>
+      <p><i class="fa fa-envelope"></i> info@bellavista.com</p>
+      <p><i class="fa fa-phone"></i> +880123456789</p>
     </div>
-  </section>
-
-  <section id="reserve" class="section">
-    <div class="container">
-      <h2>Reserve a Table</h2>
-      <form id="reservation-form" class="reserve-form">
-        <div class="row">
-          <input type="text" id="res-name" placeholder="Name" required>
-          <input type="email" id="res-email" placeholder="Email" required>
-        </div>
-        <div class="row">
-          <input type="date" id="res-date" required>
-          <input type="time" id="res-time" required>
-          <input type="number" id="res-guests" placeholder="Guests" required>
-        </div>
-        <button type="submit" class="btn primary">Reserve</button>
+    <div class="footer-col newsletter">
+      <h3>Newsletter</h3>
+      <form id="footer-news-form">
+        <input type="email" name="email" placeholder="Enter your email" required>
+        <button type="submit">Subscribe</button>
+        <small>Subscribe for updates and exclusive offers.</small>
       </form>
     </div>
-  </section>
+  </div>
+  <div class="footer-bottom">&copy; <span id="year"></span> Bella Vista Bistro — All rights reserved</div>
+</footer>
 
-  <section id="testimonials" class="section">
-    <div class="container">
-      <h2>Testimonials</h2>
-      <div class="testimonials grid">
-        <div class="testimonial card">"Amazing food and ambience." — Sarah</div>
-        <div class="testimonial card">"Best dining experience." — Michael</div>
-        <div class="testimonial card">"Chef's specials are outstanding." — Priya</div>
-      </div>
-    </div>
-  </section>
+<script>
+// Handle newsletter form submission
+document.getElementById('footer-news-form')?.addEventListener('submit', async function(e){
+  e.preventDefault();
+  const email = this.querySelector('input[type="email"]').value;
+  
+  try {
+    const response = await fetch('/api/newsletter/subscribe', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email })
+    });
+    
+    if (response.ok) {
+      alert('Thank you for subscribing!');
+      this.reset();
+    } else {
+      alert('Failed to subscribe. Please try again.');
+    }
+  } catch (error) {
+    console.log('Newsletter subscription (offline mode)');
+    this.reset();
+  }
+});
 
-  <section id="about" class="section">
-    <div class="container">
-      <h2>About Us</h2>
-      <p>At Bella Vista Bistro, our story is rooted in passion for fresh ingredients and culinary excellence. Meet our head chef, Marco Rossi, who leads our kitchen with creativity.</p>
-    </div>
-  </section>
+document.getElementById('year').textContent = new Date().getFullYear();
 
-  <section id="contact" class="section">
-    <div class="container contact-grid">
-      <div>
-        <h2>Contact Us</h2>
-        <p>123 Main St, City, State | (123) 456-7890 | info@bellavistabistro.com</p>
-        <form id="contact-form" class="contact-form">
-          <input type="text" id="contact-name" placeholder="Name" required>
-          <input type="email" id="contact-email" placeholder="Email" required>
-          <textarea id="contact-message" placeholder="Message" required></textarea>
-          <button type="submit" class="btn">Send Message</button>
-        </form>
-      </div>
-      <div class="map-wrapper">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12345.6789!2d-122.4194!3d37.7749!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzcuNzc0OSwtMTIyLjQxOTQ!5e0!3m2!1sen!2sus!4v1234567890" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-      </div>
-    </div>
-  </section>
+// Authentication handling for navbar
+function updateAuthUI() {
+  const token = localStorage.getItem('token');
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const authContainer = document.getElementById('authLinkContainer');
+  
+  if (token && user.id) {
+    // User is logged in
+    const userDisplay = user.role === 'admin' ? `${user.name} (Admin)` : user.name;
+    let html = `
+      <span class="user-menu">
+        <span style="color: white; font-size: 14px;">Hello, ${userDisplay}</span>
+    `;
+    
+    if (user.role === 'admin') {
+      html += `<a href="admin_new.html" class="btn-admin">Admin Panel</a>`;
+    }
+    
+    html += `<button class="btn-logout" onclick="logout()">Logout</button></span>`;
+    authContainer.innerHTML = html;
+  } else {
+    // User is not logged in
+    authContainer.innerHTML = '<a href="login.html" class="btn-auth">Login / Register</a>';
+  }
+}
 
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <div class="brand-sm">
-        <h3>Bella Vista Bistro</h3>
-        <p>Fine dining &amp; exquisite flavors</p>
-      </div>
-      <div class="socials">
-        <a href="#"><i class="fab fa-facebook-f"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
-        <a href="#"><i class="fab fa-twitter"></i></a>
-      </div>
-      <div class="footer-nav">
-        <a href="#menu">Menu</a>
-        <a href="#reserve">Reserve</a>
-        <a href="#contact">Contact</a>
-      </div>
-    </div>
-    <div class="container copyright">&copy; 2026 Bella Vista Bistro. All rights reserved.</div>
-  </footer>
+function logout() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  localStorage.removeItem('expiresAt');
+  updateAuthUI();
+  location.reload();
+}
 
-  <script src="js/app.js"></script>
+// Update cart count from localStorage
+function updateCartCount() {
+  try {
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const count = cart.reduce((sum, item) => sum + (item.qty || 0), 0);
+    document.querySelectorAll('.cart-count').forEach(el => {
+      el.textContent = count;
+    });
+  } catch (e) {
+    console.log('Cart count update error');
+  }
+}
+
+// Update UI on page load
+updateAuthUI();
+updateCartCount();
+
+// Listen for storage changes (cart updates from other windows)
+window.addEventListener('storage', () => {
+  updateAuthUI();
+  updateCartCount();
+});
+</script>
+
 </body>
 </html>
