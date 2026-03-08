@@ -10,7 +10,8 @@
     const authContainer = $('authLinkContainer');
     if(!authContainer) return;
     if (token && user.id) {
-      const userDisplay = user.role === 'admin' ? `${user.name} (Admin)` : user.name;
+      const displayName = user.name || user.email || 'User';
+      const userDisplay = user.role === 'admin' ? `${displayName} (Admin)` : displayName;
       let html = `<span class=\"user-menu\"><span style=\"color: white; font-size: 14px;\">Hello, ${userDisplay}</span>`;
       if (user.role === 'admin') {
         html += `<a href=\"admin_new.html\" class=\"btn-admin\">Admin Panel</a>`;
@@ -67,7 +68,8 @@
         data.forEach(t=>{
           const div = document.createElement('div');
           div.className = 'about-img';
-          div.innerHTML = `<img src="${t.image||'https://via.placeholder.com/150'}"><h2>${t.name}</h2><p>${t.title||''}</p>`;
+          // team members store imageUrl, not image
+          div.innerHTML = `<img src="${t.imageUrl||'https://via.placeholder.com/150'}"><h2>${t.name}</h2><p>${t.title||''}</p>`;
           container.appendChild(div);
         });
       }
@@ -86,7 +88,7 @@
       const featured = fRes.ok ? await fRes.json() : [];
       const heroEl = $('hero-carousel');
       if(heroEl && heroes.length){
-        heroEl.innerHTML = heroes.map(h=>`<div class=\"hero-slide\" style=\"background-image:url('${h.image}')\">${h.title?`<h2>${h.title}</h2>`:''}</div>`).join('');
+        heroEl.innerHTML = heroes.map(h=>`<div class=\"hero-slide\" style=\"background-image:url('${h.url}')\">${h.title?`<h2>${h.title}</h2>`:''}</div>`).join('');
         // activate first slide and start rotation
         const slides = heroEl.querySelectorAll('.hero-slide');
         if(slides.length){
@@ -101,7 +103,8 @@
       }
       const featEl = $('featured-gallery');
       if(featEl && featured.length){
-        featEl.innerHTML = featured.map(f=>`<div class=\"featured-img\"><img src="${f.image}" alt=""></div>`).join('');
+        // featured images also use url field
+        featEl.innerHTML = featured.map(f=>`<div class=\"featured-img\"><img src="${f.url}" alt=""></div>`).join('');
       }
     }catch(e){console.log('hero/featured load',e);}
   }
@@ -117,17 +120,28 @@
       if(!menuDiv) return;
       // build categories
       const cats = Array.from(new Set(items.map(d=>d.category||'Main')));
-      filters.innerHTML = `<button data-cat=\"all\" class=\"active\">All</button>` + cats.map(c=>`<button data-cat=\"${c}\">${c}</button>`).join('');
+      filters.className = 'menu-tabs';
+      filters.innerHTML = `<button data-cat=\"all\" class=\"tab active\">All</button>` + cats.map(c=>`<button class="tab" data-cat=\"${c}\">${c}</button>`).join('');
       function render(filter){
         menuDiv.innerHTML = '';
+        menuDiv.className = 'menu-grid';
         items.filter(i=>filter==='all' || (i.category||'Main')===filter).forEach(item=>{
           const card = document.createElement('div');
           card.className='card menu-card';
+          const hasDiscount = item.discountPercent && item.discountPercent > 0;
+          const finalPrice = hasDiscount ? (item.price * (1 - item.discountPercent/100)) : item.price;
           card.innerHTML = `
-            <img src="${item.imageUrl||item.image||'https://via.placeholder.com/400x300'}" alt="${item.name}">
-            <h3>${item.name}</h3>
-            <p class=\"muted\">${item.description||''}</p>
-            <div class=\"meta\"><div class=\"price\">$${(item.price||0).toFixed(2)}</div><div class=\"actions\"><button class=\"btn add\">Add</button></div></div>
+            <div class="menu-card-img"><img src="${item.imageUrl||item.image||'https://via.placeholder.com/400x300'}" alt="${item.name}"></div>
+            <div class="menu-card-body">
+              <h3>${item.name}</h3>
+              <p class=\"muted\">${item.description||''}</p>
+              <div class=\"meta\">
+                <div class=\"price\">
+                  ${hasDiscount ? `<span class="old">$${(item.price||0).toFixed(2)}</span> <span class="new">$${finalPrice.toFixed(2)}</span> <span class="badge-off">-${item.discountPercent}%</span>` : `<span class="new">$${(item.price||0).toFixed(2)}</span>`}
+                </div>
+                <div class=\"actions\"><button class=\"btn add\">Add</button></div>
+              </div>
+            </div>
           `;
           menuDiv.appendChild(card);
           card.querySelector('.add').addEventListener('click', ()=>{
@@ -152,6 +166,7 @@
     }catch(e){console.log('menu load err',e);}  
   }
   window.loadMenuItems = loadMenuItems;
+
 
   // when DOM ready perform initial actions
   document.addEventListener('DOMContentLoaded', ()=>{

@@ -474,6 +474,24 @@
 
   <script src="js/site.js"></script>
   <script>
+    // Alert function for UI feedback
+    function showAlert(message, type = 'success') {
+      const container = document.getElementById('alert-container');
+      let alertContainer = container;
+      if (!alertContainer) {
+        alertContainer = document.createElement('div');
+        alertContainer.id = 'alert-container';
+        alertContainer.style.cssText = 'position:fixed;top:100px;left:50%;transform:translateX(-50%);z-index:10000;width:90%;max-width:500px';
+        document.body.appendChild(alertContainer);
+      }
+      const alert = document.createElement('div');
+      alert.className = `alert alert-${type}`;
+      alert.style.cssText = `padding:12px 16px;margin-bottom:16px;border-radius:6px;color:#fff;font-weight:500;animation:slideIn 0.3s ease;${type === 'success' ? 'background:#02A237' : 'background:#ff6b6b'}`;
+      alert.textContent = message;
+      alertContainer.appendChild(alert);
+      setTimeout(() => alert.remove(), 4000);
+    }
+
     // contact form stays
     document.getElementById('contactForm')?.addEventListener('submit', async function(e) {
       e.preventDefault();

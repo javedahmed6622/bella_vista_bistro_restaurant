@@ -1032,6 +1032,10 @@
           <input type="number" id="product-price" required step="0.01" placeholder="0.00">
         </div>
         <div class="form-group">
+          <label>Discount (%)</label>
+          <input type="number" id="product-discount" step="1" min="0" max="100" placeholder="0">
+        </div>
+        <div class="form-group">
           <label>Upload Image (PNG, JPG, SVG)</label>
           <div class="file-input-wrapper">
             <input type="file" id="product-image" accept=".png,.jpg,.jpeg,.svg" onchange="previewImage(this, 'product-preview')">

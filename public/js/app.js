@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const card = document.createElement('div');
           card.className = 'card menu-card';
           card.innerHTML = `
-            <img src="${item.image || 'https://via.placeholder.com/400x300'}" alt="${item.name}">
+            <img src="${item.imageUrl||item.image || 'https://via.placeholder.com/400x300'}" alt="${item.name}">
             <h3>${item.name}</h3>
             <p class="muted">${item.description || ''}</p>
             <div class="meta"><div class="price">$${item.price?.toFixed(2)||'0.00'}</div><div class="actions"><button class="btn add">Add</button></div></div>
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
           card.querySelector('.add').addEventListener('click', ()=>{
             const ex = cart.find(c=>c.id===item._id);
             if(ex) ex.qty++;
-            else cart.push({id:item._id,name:item.name,price:item.price||0,qty:1,image:item.image||''});
+            else cart.push({id:item._id,name:item.name,price:item.price||0,qty:1,image:item.imageUrl||item.image||''});
             saveCart();
             // redirect to cart page for user to review
             location.href = '/cart.html';
@@ -84,12 +84,28 @@ document.addEventListener('DOMContentLoaded', () => {
   // Checkout (creates an order with cart items)
   $('checkout-btn')?.addEventListener('click', ()=>{
     if(cart.length===0) return window.ui?.toast('error','Cart is empty');
-    const name = prompt('Enter your name for order');
-    const email = prompt('Enter your email');
-    const order = { customerName: name||'Guest', email: email||'', items: cart.map(c=>({name:c.name,quantity:c.qty})), total: cart.reduce((s,i)=>s+i.price*i.qty,0) };
+    let name = prompt('Enter your name for order');
+    if(name) name = name.trim();
+    if(!name) return window.ui?.toast('error','Name is required');
+    let email = prompt('Enter your email');
+    if(email) email = email.trim();
+    if(!email) return window.ui?.toast('error','Email is required');
+    const order = { customerName: name, email: email, items: cart.map(c=>({name:c.name,quantity:c.qty})), total: cart.reduce((s,i)=>s+i.price*i.qty,0) };
+    console.log('Submitting order', order);
     fetch('/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(order)})
-      .then(()=>{cart=[];saveCart();window.ui?.toast('success','Order placed successfully!')})
-      .catch(e=>window.ui?.toast('error','Error placing order'));
+      .then(async res=>{
+        if (!res.ok) {
+          const err = await res.json();
+          window.ui?.toast('error','Order failed: '+(err.error||res.status));
+          console.error('order response', err);
+          return;
+        }
+        cart=[];saveCart();window.ui?.toast('success','Order placed successfully!');
+      })
+      .catch(e=>{
+        console.error('fetch error', e);
+        window.ui?.toast('error','Error placing order');
+      });
   });
 
   // Reservation form submission

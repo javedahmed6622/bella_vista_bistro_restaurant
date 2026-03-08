@@ -73,12 +73,6 @@
           location.href = 'login.html';
           return;
         }
-        
-        if (!user.isApproved && user.role === 'customer') {
-          alert('Your account is pending admin approval. Please wait for approval before placing an order.');
-          return;
-        }
-        
         if(cart.length===0) return alert('Cart is empty');
         
         const phone = prompt('Your phone number');
@@ -86,7 +80,7 @@
         
         const order = { 
           userId: user.id,
-          customerName: user.name, 
+          customerName: user.name || user.email || 'Guest', 
           email: user.email,
           phone: phone || '',
           address: address,

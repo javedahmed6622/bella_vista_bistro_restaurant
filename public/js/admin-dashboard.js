@@ -546,6 +546,8 @@ async function saveProduct(event) {
   const category = document.getElementById('product-category').value;
   const description = document.getElementById('product-description').value;
   const price = parseFloat(document.getElementById('product-price').value);
+  const discountPercentVal = document.getElementById('product-discount')?.value;
+  const discountPercent = discountPercentVal ? parseFloat(discountPercentVal) : 0;
   const fileInput = document.getElementById('product-image');
   
   let filename = '';
@@ -559,7 +561,9 @@ async function saveProduct(event) {
     category,
     description,
     price,
-    image: filename ? `/uploads/${filename}` : ''
+    discountPercent,
+    // backend expects imageUrl field
+    imageUrl: filename ? `/uploads/${filename}` : ''
   };
   
   try {
@@ -600,15 +604,19 @@ async function loadProducts() {
     }
     
     products.forEach(product => {
+      const hasDiscount = product.discountPercent && product.discountPercent > 0;
+      const finalPrice = hasDiscount ? (product.price * (1 - product.discountPercent/100)) : product.price;
       const html = `
         <div class="content-item">
           <div class="content-item-image">
-            ${product.image ? `<img src="${product.image}" alt="${product.name}">` : '<i class="fas fa-image"></i>'}
+            ${ (product.imageUrl||product.image) ? `<img src="${product.imageUrl||product.image}" alt="${product.name}">` : '<i class="fas fa-image"></i>'}
           </div>
           <div class="content-item-body">
             <div class="content-item-title">${product.name}</div>
             <div class="content-item-meta">${product.category}</div>
-            <div class="content-item-meta"><strong>৳${product.price}</strong></div>
+            <div class="content-item-meta">
+              ${hasDiscount ? `<span style="text-decoration:line-through;color:#999;margin-right:6px">৳${product.price}</span><strong style="color:#02A237">৳${finalPrice.toFixed(2)}</strong> <span class="status-badge" style="margin-left:6px">-${product.discountPercent}%</span>` : `<strong>৳${product.price}</strong>`}
+            </div>
             <div class="content-item-actions">
               <button type="button" class="btn-small btn-delete" onclick="deleteContent('product', '${product._id}')">Delete</button>
             </div>
@@ -639,12 +647,18 @@ async function loadOrders() {
     }
     
     orders.forEach(order => {
+      const statusOptions = ['pending','confirmed','preparing','ready','delivered','cancelled'];
+      const optionsHtml = statusOptions.map(s=>`<option value="${s}" ${order.status===s?'selected':''}>${s.charAt(0).toUpperCase()+s.slice(1)}</option>`).join('');
       tbody.innerHTML += `
         <tr>
           <td><strong>#${order._id.substring(0, 8)}</strong></td>
           <td>${order.customerName}</td>
           <td><strong>৳${order.total}</strong></td>
-          <td><span class="status-badge status-${order.status}">${order.status}</span></td>
+          <td>
+            <select data-id="${order._id}" class="order-status-select">
+              ${optionsHtml}
+            </select>
+          </td>
           <td>${new Date(order.createdAt).toLocaleDateString()}</td>
           <td>
             <button type="button" class="btn-small btn-view" onclick="viewOrderDetails('${order._id}')">View</button>
@@ -652,6 +666,30 @@ async function loadOrders() {
           </td>
         </tr>
       `;
+    });
+
+    // wire status change
+    tbody.querySelectorAll('.order-status-select').forEach(sel=>{
+      sel.addEventListener('change', async (e)=>{
+        const id = e.target.getAttribute('data-id');
+        const status = e.target.value;
+        try{
+          const res = await fetch(`/api/orders/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+            body: JSON.stringify({ status })
+          });
+          if(res.ok){
+            showAlert('Order status updated');
+            loadOrders();
+            loadDashboardStats();
+          } else {
+            showAlert('Failed to update status', 'error');
+          }
+        }catch(err){
+          showAlert('Error updating status: ' + err.message, 'error');
+        }
+      });
     });
   } catch (error) {
     showAlert('Error loading orders', 'error');

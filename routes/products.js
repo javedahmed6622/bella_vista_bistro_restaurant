@@ -48,7 +48,7 @@ router.get('/:id', async (req, res) => {
 // Create product (admin only)
 router.post('/', verifyAdmin, async (req, res) => {
   try {
-    const { name, description, price, category, imageUrl, imageFilename } = req.body;
+    const { name, description, price, category, imageUrl, imageFilename, discountPercent } = req.body;
     
     if (!name || !price) {
       return res.status(400).json({ message: 'Name and price are required' });
@@ -60,7 +60,8 @@ router.post('/', verifyAdmin, async (req, res) => {
       price,
       category,
       imageUrl,
-      imageFilename
+      imageFilename,
+      discountPercent
     });
     
     await product.save();
@@ -73,10 +74,10 @@ router.post('/', verifyAdmin, async (req, res) => {
 // Update product (admin only)
 router.put('/:id', verifyAdmin, async (req, res) => {
   try {
-    const { name, description, price, category, imageUrl, imageFilename, isAvailable } = req.body;
+    const { name, description, price, category, imageUrl, imageFilename, isAvailable, discountPercent } = req.body;
     const product = await Product.findByIdAndUpdate(
       req.params.id,
-      { name, description, price, category, imageUrl, imageFilename, isAvailable, updatedAt: new Date() },
+      { name, description, price, category, imageUrl, imageFilename, isAvailable, discountPercent, updatedAt: new Date() },
       { new: true }
     );
     

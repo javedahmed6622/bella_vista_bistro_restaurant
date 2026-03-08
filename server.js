@@ -16,6 +16,14 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.log(err));
 
+// catch unhandled exceptions/rejections to avoid crashing the whole process
+process.on('uncaughtException', err => {
+  console.error('Uncaught exception:', err);
+});
+process.on('unhandledRejection', err => {
+  console.error('Unhandled promise rejection:', err);
+});
+
 // Routes
 app.use('/api/menu', require('./routes/menu'));
 app.use('/api/products', require('./routes/products'));

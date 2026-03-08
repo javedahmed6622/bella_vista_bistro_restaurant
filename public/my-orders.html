@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Orders - Bella Vista Bistro</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <nav class="navbar-professional">
+    <div class="navbar-container">
+      <div class="navbar-brand">
+        <a href="index.html"><h1><span class="restaurant-name">Bella Vista Bistro</span></h1></a>
+      </div>
+      <ul class="navbar-menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart <span class="cart-count">0</span></a></li>
+        <li id="authLinkContainer"><a href="login.html" class="btn-auth">Login</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div style="max-width:1200px;margin:30px auto;padding:0 16px">
+    <h1 style="margin:16px 0;color:#02A237">My Orders</h1>
+
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px">
+      <label>Status</label>
+      <select id="filter-status">
+        <option value="">All</option>
+        <option value="pending">Pending</option>
+        <option value="confirmed">Confirmed</option>
+        <option value="preparing">Preparing</option>
+        <option value="ready">Ready</option>
+        <option value="delivered">Delivered</option>
+        <option value="cancelled">Cancelled</option>
+      </select>
+    </div>
+
+    <div id="orders-container"></div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+      <button id="prev-page" class="btn">Prev</button>
+      <div id="page-info" class="muted"></div>
+      <button id="next-page" class="btn">Next</button>
+    </div>
+  </div>
+
+  <script src="js/ui.js"></script>
+  <script src="js/site.js"></script>
+  <script>
+    (function(){
+      const container = document.getElementById('orders-container');
+      const statusSel = document.getElementById('filter-status');
+      const prevBtn = document.getElementById('prev-page');
+      const nextBtn = document.getElementById('next-page');
+      const pageInfo = document.getElementById('page-info');
+
+      let page = 1, limit = 10, totalPages = 1;
+      let lastStatuses = {}; // orderId -> status
+
+      function renderOrders(payload){
+        const { data, page: p, totalPages: t } = payload;
+        totalPages = t || 1;
+        page = p || 1;
+        pageInfo.textContent = 'Page '+page+' of '+totalPages;
+        prevBtn.disabled = page <= 1;
+        nextBtn.disabled = page >= totalPages;
+
+        if(!data || !data.length){
+          container.innerHTML = '<div class="muted">No orders found</div>';
+          return;
+        }
+        container.innerHTML = '';
+        data.forEach(o=>{
+          const card = document.createElement('div');
+          card.className = 'order-card';
+          card.innerHTML = `
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div><strong>Order #${String(o._id).slice(0,8)}</strong></div>
+              <div class="status-badge status-${o.status}" data-order="${o._id}">${o.status}</div>
+            </div>
+            <div class="muted" style="margin-top:6px">${new Date(o.createdAt).toLocaleString()}</div>
+            <div style="margin-top:6px">Items: ${(o.items||[]).map(i=>`${i.name} x${i.quantity}`).join(', ')}</div>
+            <div style="margin-top:6px"><strong>Total:</strong> $${(o.total||0).toFixed(2)}</div>
+          `;
+          container.appendChild(card);
+          // notify on status change
+          if(lastStatuses[o._id] && lastStatuses[o._id] !== o.status){
+            window.ui?.toast('info', 'Order '+String(o._id).slice(0,8)+' status updated to '+o.status);
+            const badge = card.querySelector('[data-order]');
+            if(badge){ badge.style.transition='transform .3s ease'; badge.style.transform='scale(1.08)'; setTimeout(()=>badge.style.transform='scale(1)', 300); }
+          }
+          lastStatuses[o._id] = o.status;
+        });
+      }
+
+      async function load(){
+        const token = localStorage.getItem('token');
+        if(!token){ container.innerHTML = '<div class="muted">Please login to view your orders.</div>'; return; }
+        const status = statusSel.value;
+        try{
+          const qs = new URLSearchParams({ page, limit, status }).toString();
+          const res = await fetch('/api/orders/my?'+qs, { headers:{ 'Authorization':'Bearer '+token } });
+          if(!res.ok){ container.innerHTML = '<div class="muted">Unable to load orders</div>'; return; }
+          const data = await res.json();
+          renderOrders(data);
+        }catch(e){
+          container.innerHTML = '<div class="muted">Unable to load orders</div>';
+        }
+      }
+
+      statusSel.addEventListener('change', ()=>{ page=1; load(); });
+      prevBtn.addEventListener('click', ()=>{ if(page>1){ page--; load(); }});
+      nextBtn.addEventListener('click', ()=>{ if(page<totalPages){ page++; load(); }});
+
+      setInterval(load, 15000); // poll for status changes
+      document.addEventListener('DOMContentLoaded', load);
+      load();
+    })();
+  </script>
+</body>
+</html>

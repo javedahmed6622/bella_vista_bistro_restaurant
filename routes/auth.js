@@ -32,7 +32,7 @@ router.post('/register', async (req, res) => {
       phone,
       address,
       role: 'customer',
-      isApproved: false // Customer registration requires admin approval
+      isApproved: true
     });
     
     await newUser.save();
@@ -62,10 +62,7 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
     
-    // Check if user is approved (for customers)
-    if (user.role === 'customer' && !user.isApproved) {
-      return res.status(403).json({ message: 'Your account is pending admin approval' });
-    }
+    // No approval gate for customers
     
     // Check password
     if (!bcrypt.compareSync(password, user.password)) {
@@ -84,7 +81,7 @@ router.post('/login', async (req, res) => {
       token,
       user: {
         id: user._id,
-        name: user.name,
+        name: user.name || user.email, // fallback if name missing
         email: user.email,
         role: user.role
       }

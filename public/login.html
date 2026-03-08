@@ -378,8 +378,20 @@
   </footer>
 
   <script>
-    document.getElementById('year-footer').textContent = new Date().getFullYear();
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    // Alert function for UI feedback
+    function showAlert(message, type = 'success') {
+      const container = document.getElementById('alert-container');
+      const alert = document.createElement('div');
+      alert.className = `alert alert-${type}`;
+      alert.style.cssText = `padding:12px 16px;margin-bottom:16px;border-radius:6px;color:#fff;font-weight:500;animation:slideIn 0.3s ease;${type === 'success' ? 'background:#02A237' : 'background:#ff6b6b'}`;
+      alert.textContent = message;
+      if (container) {
+        container.appendChild(alert);
+        setTimeout(() => alert.remove(), 4000);
+      }
+    }
+
+    document.getElementById('year-footer').textContent = new Date().getFullYear();    document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       
       const email = document.getElementById('email').value.trim();
@@ -455,11 +467,7 @@
       }
     });
 
-    // site.js handles auth UI and cart count
-    <script src="js/site.js"></script>
-    <script>
-    // newsletter handler from earlier remains above
-    </script>
   </script>
+  <script src="js/site.js"></script>
 </body>
 </html>

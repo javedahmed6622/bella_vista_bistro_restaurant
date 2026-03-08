@@ -7,6 +7,7 @@ const ProductSchema = new mongoose.Schema({
   category: { type: String, default: 'appetizer' },
   imageUrl: String,
   imageFilename: String,
+  discountPercent: { type: Number, default: 0 },
   isAvailable: { type: Boolean, default: true },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }

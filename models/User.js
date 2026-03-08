@@ -7,7 +7,7 @@ const UserSchema = new mongoose.Schema({
   phone: String,
   address: String,
   role: { type: String, enum: ['customer', 'admin'], default: 'customer' },
-  isApproved: { type: Boolean, default: false },
+  isApproved: { type: Boolean, default: true },
   avatar: String,
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
