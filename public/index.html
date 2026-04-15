@@ -8,6 +8,7 @@
 
 
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="styles-new.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -26,6 +27,7 @@
       <li><a href="index.html">Home</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="menu.html">Menu</a></li>
+      <li><a href="blog.html">Blog</a></li>
       <li><a href="contact.html">Contact</a></li>
       <li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart <span class="cart-count">0</span></a></li>
       <li id="authLinkContainer">
@@ -35,158 +37,160 @@
   </div>
 </nav>
 
-<div id="hero-carousel" class="hero-carousel"></div>
-
-<div class="container">
-<div class="container-left">
-<h1 style="font-family: pacifico; font-size: 40px;">
- <span >Let's </span>
- Eat
- <span >Together</span> 
-</h1>
-<p  style="font-family: pacifico; font-size: 30px;">The Best Restautant</p>
-<br>
-
-<a class="btn" href="menu.html" style="background-color: orange; color: #fff; padding:10px 18px; border-radius:6px; text-decoration:none; margin-right:10px;">View Menu</a>
-<a class="btn" href="menu.html" style="background-color: #02A237; color: #fff; padding:10px 18px; border-radius:6px; text-decoration:none;">Order Now</a>
-<br>
-<img src="html_them/img/eatting.jpg" width="35%" style="margin-top: 5%;">
-</div>
-<div class="container-right">
-<img src="html_them/img/biriyani.jpg">
-
-
-</div>
-</div>
-<!--code for why choose us-->
-<center>
-<h1 style="font-size: 30px;">Why choose Us?</h1>
-<hr>
-<br>
-<br>
-<br>
-
-<div class="featured-outer">
-  <div class="featured-icon">
-    <i class="fa fa-cutlery" style="color: orange;"></i>
-    
-    <p>Fresh Food</p>
+<section class="hero-section" id="hero-section">
+  <div class="hero-content">
+    <div class="hero-text">
+      <h1 id="hero-title">All Delicious<br><span>Asian</span></h1>
+      <p id="hero-subtitle">Eggs, Salad, fruits, pasta and more — freshly prepared with love.</p>
+      <div class="hero-cta">
+        <a id="hero-cta-btn" class="btn btn-primary" href="menu.html">Find more</a>
+        <a class="btn btn-secondary" href="menu.html">Order Now</a>
+      </div>
+    </div>
+    <div class="hero-image">
+      <img id="hero-image" src="html_them/img/biriyani.jpg" alt="Delicious food" />
+    </div>
   </div>
-  <div class="featured-icon">
-    <i class="fa fa-clock-o" style="color: green;"></i>
-    <p>24x7</p>
+</section>
+<section class="section-features">
+  <div class="section-header">
+    <h2>Our Delicious &amp; Special Salad</h2>
+    <p>Fresh ingredients combined with rich flavors and modern presentation — made for every craving.</p>
   </div>
-  <div class="featured-icon">
-    <i class="fa fa-motorcycle" style="color: orange;"></i>
-    <p>Fast Delivery</p>
+
+  <div class="features-grid">
+    <article class="feature-card">
+      <img src="html_them/img/sandwich1.jpg" alt="Fresh Salad" />
+      <h3>Fresh Salad Bowl</h3>
+      <p>Made with crisp greens, seasonal toppings, and our signature dressing.</p>
+    </article>
+
+    <article class="feature-card">
+      <img src="html_them/img/cake2.jpg" alt="Premium Ingredients" />
+      <h3>Premium Ingredients</h3>
+      <p>Only the best produce and handmade sauces make it onto your plate.</p>
+    </article>
+
+    <article class="feature-card">
+      <img src="html_them/img/pizza.webp" alt="Chef's Choice" />
+      <h3>Chef’s Choice</h3>
+      <p>Daily handpicked specials crafted by our head chef for maximum flavor.</p>
+    </article>
+
+    <article class="feature-card">
+      <img src="html_them/img/bf.jpg" alt="Always Fresh" />
+      <h3>Always Fresh</h3>
+      <p>Prepared to order and served fresh — never frozen.</p>
+    </article>
   </div>
-  
-  <div class="featured-icon">
-    <i class="fa fa-birthday-cake" style="color: green;"></i>
-    <p>Birthday Space</p>
+</section>
+
+<section class="section-about">
+  <div class="about-grid">
+    <div class="about-text">
+      <h2 id="about-title">Welcome to our Dhabi Restaurant</h2>
+      <p id="about-text">Experience the perfect blend of local flavors and modern presentation. Our chefs craft every dish with care and top-quality ingredients.</p>
+      <a id="about-cta-btn" href="menu.html" class="btn btn-primary">Find more</a>
+    </div>
+    <div class="about-image">
+      <img id="about-image" src="html_them/img/biriyani.jpg" alt="Chef's Special" />
+    </div>
   </div>
-<div class="featured-icon">
-    <i class="fa fa-star" style="color: orange;"></i>
-    <p>259 Reviews</p>
+</section>
+
+<section class="section-team">
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="team-img">
+        <img src="html_them/img/author-01.png" alt="Chef" />
+      </div>
+      <div class="team-info">
+        <h3>Our Expert Chef</h3>
+        <p>From traditional recipes to modern twists, our chef leads the kitchen with passion and precision.</p>
+      </div>
+    </div>
+
+    <div class="testimonial-card">
+      <div class="testimonial-content">
+        <h3>Happy Customers</h3>
+        <p>“Amazing food and service! Every dish was flavorful and beautifully presented. Highly recommend.”</p>
+        <div class="testimonial-author">
+          <span>— Abdullah Iqbal</span>
+          <span>— Henry John</span>
+        </div>
+      </div>
+      <div class="testimonial-img">
+        <img src="html_them/img/author-02.png" alt="Customer" />
+      </div>
+    </div>
   </div>
-</div>
-</center>
-<!--code for dynamic gallery featured-->
-<center>
-  <br>
-  <br>
-<h1 style="font-size: 30px;">Featured Food Iteam</h1>
-<hr>
-<br>
-<br>
-<br>
-<div id="featured-gallery" class="featured-outer1"></div>
-</center>
+</section>
 
-<!-- My Orders section intentionally removed; dedicated page will be used -->
+<!-- keep original sections for compatibility -->
+<section class="original-sections">
+  <center>
+    <h1 class="why-choose-title" style="font-size: 24px;">Why choose Us?</h1>
+    <hr>
+    <br>
+    <br>
+    <br>
+    <div class="featured-outer">
+      <div class="featured-icon">
+        <i class="fa fa-cutlery" style="color: orange;"></i>
+        <p>Fresh Food</p>
+      </div>
+      <div class="featured-icon">
+        <i class="fa fa-clock-o" style="color: green;"></i>
+        <p>24x7</p>
+      </div>
+      <div class="featured-icon">
+        <i class="fa fa-motorcycle" style="color: orange;"></i>
+        <p>Fast Delivery</p>
+      </div>
+      <div class="featured-icon">
+        <i class="fa fa-birthday-cake" style="color: green;"></i>
+        <p>Birthday Space</p>
+      </div>
+      <div class="featured-icon">
+        <i class="fa fa-star" style="color: orange;"></i>
+        <p>259 Reviews</p>
+      </div>
+    </div>
+  </center>
 
-
-<center>
-  
-<h1 style="font-size: 30px;">Our Speciality</h1>
-<hr>
-
-<br>
-<br>
-<div class="content">
-  <div class="left">
-<img src="html_them/img/cake3.jpg">
+<!-- Featured Foods Section -->
+<section class="featured-foods-section">
+  <div class="section-header">
+    <h2>Featured Food Items</h2>
+    <p>Our most popular dishes, handpicked by our chefs</p>
   </div>
-  <div class="right">
-    <p>Looking for that perfect 1280x720 pasta shot? Here are some high-quality options:
+  <div id="featured-gallery" class="featured-grid-new"></div>
+</section>
 
-    Classic Spaghetti: High-definition images of spaghetti with rich tomato sauce and fresh basil.
-    Assorted Varieties: Wallpapers featuring different shapes like penne, fusilli, and farfalle in artistic arrangements.
-    Professional Styling: Stock photos optimized for web use, often available in the 16:9 aspect ratio you need. 
-<br><br>
-If you're using these for a project, you can find more specific dimensions and free downloads on platforms like Pixabay, Unsplash, and Peakpx. 
-Do you need specific types of pasta (like Carbonara or Pesto) or a different file format (like PNG or mobile wallpaper)
-    </p>
-</div>
-</div>
-</center>
-<br>
-<br>
-<center>
-<div class="content">
- 
-  <div class="right">
-    <p>Looking for that perfect 1280x720 pasta shot? Here are some high-quality options:
-
-    Classic Spaghetti: High-definition images of spaghetti with rich tomato sauce and fresh basil.
-    Assorted Varieties: Wallpapers featuring different shapes like penne, fusilli, and farfalle in artistic arrangements.
-    Professional Styling: Stock photos optimized for web use, often available in the 16:9 aspect ratio you need. 
-<br><br>
-If you're using these for a project, you can find more specific dimensions and free downloads on platforms like Pixabay, Unsplash, and Peakpx. 
-Do you need specific types of pasta (like Carbonara or Pesto) or a different file format (like PNG or mobile wallpaper)
-    </p>
-</div>
- <div class="left">
-<img src="html_them/img/cake2.jpg">
+<!-- Our Speciality - Blog Posts Section -->
+<section class="speciality-section">
+  <div class="section-header">
+    <h2>Our Speciality</h2>
+    <p>Discover our food stories and culinary adventures</p>
+    <button id="write-blog-btn" class="btn btn-primary" style="margin-top: 20px;">Write a Blog Post</button>
   </div>
-</div>
-</center>
-<br>
-<br>
-<center>
-<div class="content">
-  <div class="left">
-<img src="html_them/img/sandwich3.jpg">
+  <div id="blog-posts-container" class="blog-posts-alternating"></div>
+  <div class="show-more-container" style="text-align: center; margin-top: 40px;">
+    <button id="show-more-blog-btn" class="btn btn-primary" style="display: none;">Show More</button>
   </div>
-  <div class="right">
-    <p>Looking for that perfect 1280x720 pasta shot? Here are some high-quality options:
+</section>
+</section>
 
-    Classic Spaghetti: High-definition images of spaghetti with rich tomato sauce and fresh basil.
-    Assorted Varieties: Wallpapers featuring different shapes like penne, fusilli, and farfalle in artistic arrangements.
-    Professional Styling: Stock photos optimized for web use, often available in the 16:9 aspect ratio you need. 
-<br><br>
-If you're using these for a project, you can find more specific dimensions and free downloads on platforms like Pixabay, Unsplash, and Peakpx. 
-Do you need specific types of pasta (like Carbonara or Pesto) or a different file format (like PNG or mobile wallpaper)
-    </p>
-</div>
-</div>
-</center>
-<center>
-  <br><br>
-<h1 style="font-size: 30px;">Subscribe For News Letter</h1>
-<hr>
-
-<br>
-<br>
-<div class="newslatter">
-  <div class="email-box">
-  <form>
-    <input type="email" placeholder="write your email address here...">
-    <input type="Submit">
-  </form>
+<section class="section-newsletter">
+  <div class="newsletter-wrap">
+    <h2 id="newsletter-title">Subscribe For Newsletter</h2>
+    <p id="newsletter-text">Get exclusive offers and updates straight to your inbox.</p>
+    <form class="newsletter-form">
+      <input type="email" placeholder="Write your email address here..." required />
+      <button id="newsletter-btn" type="submit" class="btn btn-primary">Subscribe</button>
+    </form>
   </div>
-</div>
-</center>
+</section>
 <footer class="footer" role="contentinfo">
   <div class="footer-wrap">
     <div class="footer-col about">
@@ -259,7 +263,12 @@ document.getElementById('footer-news-form')?.addEventListener('submit', async fu
 </script>
 <script src="js/site.js"></script>
 <script>
-// already loaded site.js handles auth and cart; only keep newsletter handler above
+document.addEventListener('DOMContentLoaded', function() {
+  updateAuthUI();
+  updateCartCount();
+  loadSettings();
+  loadHeroAndFeatured();
+});
 </script>
 
 </body>

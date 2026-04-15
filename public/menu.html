@@ -7,6 +7,7 @@
   <!-- Add icon library -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="styles.css">
+        <link rel="stylesheet" type="text/css" href="styles-new.css">
         <link rel="stylesheet" type="text/css" href="css/menu.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,6 +25,7 @@
       <li><a href="index.html">Home</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="menu.html">Menu</a></li>
+      <li><a href="blog.html">Blog</a></li>
       <li><a href="contact.html">Contact</a></li>
       <li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart <span class="cart-count">0</span></a></li>
       <li id="authLinkContainer">
@@ -33,16 +35,14 @@
   </div>
 </nav>
 
-<br><br><br>
-<center>
-  
-<h1 style="font-size: 30px;">Our menu</h1>
-<hr>
+<div class="menu-section-header">
+  <h1>Our Menu</h1>
+  <p>Delicious dishes prepared fresh to order, crafted with love and passion</p>
+</div>
 
-<br>
-<br>
+<center>
 <div id="menu-filters" style="margin-bottom:20px; text-align:center"></div>
-<div class="container1" id="menu-items" style="background-color:#FAFAFA;"></div>
+<div class="container1" id="menu-items" style="background-color:transparent;"></div>
 
 <!-- image modal -->
 <div class="image-modal" id="imageModal">
@@ -160,7 +160,16 @@ document.getElementById('year2').textContent = new Date().getFullYear();
 document.getElementById('footer-news-form-2')?.addEventListener('submit', function(e){ e.preventDefault(); alert('Thanks — newsletter subscribed (placeholder)'); });
 document.getElementById('year2').textContent = new Date().getFullYear();
 </script>
+<script src="js/ui.js"></script>
+<script src="js/app.js"></script>
 <script src="js/site.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  updateAuthUI();
+  updateCartCount();
+  loadSettings();
+});
+</script>
 </body>
 
 </html>

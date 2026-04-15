@@ -9,6 +9,14 @@ const ProductSchema = new mongoose.Schema({
   imageFilename: String,
   discountPercent: { type: Number, default: 0 },
   isAvailable: { type: Boolean, default: true },
+  ratings: [{
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    rating: { type: Number, min: 1, max: 5 },
+    review: String,
+    createdAt: { type: Date, default: Date.now }
+  }],
+  averageRating: { type: Number, default: 0 },
+  totalRatings: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });

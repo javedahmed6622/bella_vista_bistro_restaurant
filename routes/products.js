@@ -104,4 +104,61 @@ router.delete('/:id', verifyAdmin, async (req, res) => {
   }
 });
 
+// Add rating to product
+router.post('/:id/rate', async (req, res) => {
+  try {
+    const { rating, review, userId } = req.body;
+
+    if (!rating || rating < 1 || rating > 5) {
+      return res.status(400).json({ message: 'Rating must be between 1 and 5' });
+    }
+
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    // Check if user already rated this product
+    const existingRating = product.ratings.find(r => r.userId.toString() === userId);
+    if (existingRating) {
+      return res.status(400).json({ message: 'You have already rated this product' });
+    }
+
+    // Add new rating
+    product.ratings.push({
+      userId,
+      rating,
+      review,
+      createdAt: new Date()
+    });
+
+    // Calculate new average rating
+    const totalRating = product.ratings.reduce((sum, r) => sum + r.rating, 0);
+    product.averageRating = totalRating / product.ratings.length;
+    product.totalRatings = product.ratings.length;
+
+    await product.save();
+    res.json({ message: 'Rating added successfully', averageRating: product.averageRating, totalRatings: product.totalRatings });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Get product ratings
+router.get('/:id/ratings', async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id).select('ratings averageRating totalRatings');
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    res.json({
+      averageRating: product.averageRating,
+      totalRatings: product.totalRatings,
+      ratings: product.ratings
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;

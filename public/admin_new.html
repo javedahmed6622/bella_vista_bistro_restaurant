@@ -147,6 +147,82 @@
       background: #d32f2f;
     }
 
+    /* Blog Tabs */
+    .blog-tabs {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .tab-btn {
+      padding: 10px 20px;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      font-weight: 500;
+      color: #666;
+      transition: all 0.3s ease;
+    }
+
+    .tab-btn.active {
+      color: #02A237;
+      border-bottom-color: #02A237;
+    }
+
+    .tab-btn:hover {
+      color: #02A237;
+    }
+
+    /* Blog Status Badges */
+    .status-badge {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .status-published {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .status-draft {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    /* Approve/Reject Buttons */
+    .btn-approve {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      margin-right: 5px;
+    }
+
+    .btn-approve:hover {
+      background: #218838;
+    }
+
+    .btn-reject {
+      background: #dc3545;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .btn-reject:hover {
+      background: #c82333;
+    }
+
     /* Views */
     .admin-view {
       display: none;
@@ -457,6 +533,48 @@
       justify-content: flex-end;
     }
 
+    /* Comment management */
+    .comments-admin-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 55vh;
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+
+    .comment-admin-item {
+      background: #f8f9fa;
+      border-radius: 8px;
+      border: 1px solid rgba(0,0,0,0.08);
+      padding: 12px;
+    }
+
+    .comment-admin-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      margin-bottom: 8px;
+      color: #555;
+    }
+
+    .comment-admin-date {
+      font-size: 12px;
+      color: #888;
+    }
+
+    .comment-admin-body {
+      margin-bottom: 10px;
+      color: #333;
+      line-height: 1.4;
+    }
+
+    .comment-admin-actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+
     .btn-primary,
     .btn-secondary {
       padding: 12px 24px;
@@ -760,12 +878,18 @@
           <h2 style="color: #02A237; margin: 0;">Blog Posts</h2>
           <button class="btn-primary" onclick="openBlogModal()"><i class="fas fa-plus"></i> New Post</button>
         </div>
+        <div class="blog-tabs">
+          <button class="tab-btn active" onclick="switchBlogTab('all', this)">All Posts</button>
+          <button class="tab-btn" onclick="switchBlogTab('published', this)">Published</button>
+          <button class="tab-btn" onclick="switchBlogTab('draft', this)">Drafts</button>
+        </div>
         <div id="blog-grid" class="table-wrapper">
           <table>
             <thead>
               <tr>
                 <th>Title</th>
                 <th>Status</th>
+                <th>Author</th>
                 <th>Date</th>
                 <th>Actions</th>
               </tr>
@@ -874,6 +998,64 @@
               <label>About Us</label>
               <textarea id="setting-about" placeholder="Restaurant description..."></textarea>
             </div>
+
+            <hr style="margin: 20px 0;" />
+            <h3>Homepage Content</h3>
+
+            <div class="form-group">
+              <label>Hero Title</label>
+              <input type="text" id="setting-hero-title" placeholder="All Delicious Asian">
+            </div>
+            <div class="form-group">
+              <label>Hero Subtitle</label>
+              <textarea id="setting-hero-subtitle" placeholder="Eggs, Salad, fruits, pasta and more..."></textarea>
+            </div>
+            <div class="form-group">
+              <label>Hero CTA Text</label>
+              <input type="text" id="setting-hero-cta-text" placeholder="Find more">
+            </div>
+            <div class="form-group">
+              <label>Hero CTA URL</label>
+              <input type="text" id="setting-hero-cta-url" placeholder="/menu.html">
+            </div>
+
+            <div class="form-group">
+              <label>About Section Title</label>
+              <input type="text" id="setting-about-title" placeholder="Welcome to our Dhabi Restaurant">
+            </div>
+            <div class="form-group">
+              <label>About Section Text</label>
+              <textarea id="setting-about-text" placeholder="About section description..."></textarea>
+            </div>
+            <div class="form-group">
+              <label>About Section Image URL</label>
+              <input type="text" id="setting-about-image" placeholder="/html_them/img/biriyani.jpg">
+            </div>
+            <div class="form-group">
+              <label>About Button Text</label>
+              <input type="text" id="setting-about-btn-text" placeholder="Find more">
+            </div>
+            <div class="form-group">
+              <label>About Button URL</label>
+              <input type="text" id="setting-about-btn-url" placeholder="/menu.html">
+            </div>
+
+            <hr style="margin: 20px 0;" />
+            <h3>Newsletter Section</h3>
+
+            <div class="form-group">
+              <label>Newsletter Title</label>
+              <input type="text" id="setting-newsletter-title" placeholder="Subscribe For Newsletter">
+            </div>
+            <div class="form-group">
+              <label>Newsletter Text</label>
+              <textarea id="setting-newsletter-text" placeholder="Get exclusive offers and updates..."></textarea>
+            </div>
+            <div class="form-group">
+              <label>Newsletter Button Text</label>
+              <input type="text" id="setting-newsletter-btn-text" placeholder="Subscribe">
+            </div>
+
             <div style="display: flex; justify-content: flex-end; gap: 10px;">
               <button type="submit" class="btn-primary">Save Settings</button>
             </div>
@@ -925,9 +1107,21 @@
           </div>
           <div class="file-input-preview" id="featured-preview"></div>
         </div>
+        <div class="form-group">
+          <label>Title</label>
+          <input type="text" id="featured-title" placeholder="e.g., Fresh Salad Bowl" required>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="featured-desc" placeholder="Short description..." rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Price (optional)</label>
+          <input type="number" id="featured-price" placeholder="0.00" step="0.01" min="0">
+        </div>
         <div class="modal-actions">
           <button type="button" class="btn-secondary" onclick="closeModal('featured-modal')">Cancel</button>
-          <button type="submit" class="btn-primary">Save Image</button>
+          <button type="submit" class="btn-primary">Save Featured Item</button>
         </div>
       </form>
     </div>
@@ -962,6 +1156,22 @@
           <button type="submit" class="btn-primary">Save Post</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- Comments Management Modal -->
+  <div class="modal" id="comments-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span id="comments-modal-title">Comments</span>
+        <button class="modal-close" onclick="closeModal('comments-modal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="comments-list"></div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" onclick="closeModal('comments-modal')">Close</button>
+      </div>
     </div>
   </div>
 

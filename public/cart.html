@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Shopping Cart - Bella Vista Bistro</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles-new.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800" rel="stylesheet">
   <style>
@@ -356,7 +357,7 @@
 </head>
 <body>
   <script src="js/ui.js"></script>
-  <header class="navbar-professional" style="padding: 0;">
+  <nav class="navbar-professional">
     <div class="navbar-container">
       <div class="navbar-brand">
         <a href="index.html"><h1><span class="restaurant-name">Bella Vista Bistro</span></h1></a>
@@ -365,6 +366,7 @@
         <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="menu.html">Menu</a></li>
+        <li><a href="blog.html">Blog</a></li>
         <li><a href="contact.html">Contact</a></li>
         <li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart <span class="cart-count">0</span></a></li>
         <li id="authLinkContainer">
@@ -372,7 +374,7 @@
         </li>
       </ul>
     </div>
-  </header>
+  </nav>
 
   <main class="cart-wrapper">
     <div class="cart-header">
@@ -528,5 +530,10 @@
     });
   </script>
   <script src="js/site.js"></script>
-</body>
-</html>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  updateAuthUI();
+  updateCartCount();
+  loadSettings();
+});
+</script>

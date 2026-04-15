@@ -1,0 +1,548 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Blog - Bella Vista Bistro</title>
+  <!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+        <link rel="stylesheet" type="text/css" href="styles-new.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+</head>
+<body>
+<!-- Professional Navigation Header -->
+<nav class="navbar-professional">
+  <div class="navbar-container">
+    <div class="navbar-brand">
+      <a href="index.html"><h1><span class="restaurant-name">Bella Vista Bistro</span></h1></a>
+    </div>
+    <ul class="navbar-menu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart <span class="cart-count">0</span></a></li>
+      <li id="authLinkContainer">
+        <a href="login.html" class="btn-auth">Login</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Blog Header -->
+<section class="blog-header">
+  <div class="section-header">
+    <h1>Our Food Stories</h1>
+    <p>Discover our culinary adventures, recipes, and behind-the-scenes stories</p>
+  </div>
+</section>
+
+<!-- Featured Blog Post -->
+<section class="featured-blog-section">
+  <div id="featured-blog-container" class="featured-blog-container">
+    <!-- Featured blog post will be loaded here -->
+  </div>
+</section>
+
+<!-- All Blog Posts -->
+<section class="all-blogs-section">
+  <div class="section-header">
+    <h2>All Blog Posts</h2>
+    <p>Explore our complete collection of food stories and culinary insights</p>
+    <div class="blog-count" id="blog-count"></div>
+  </div>
+  <div id="all-blogs-container" class="all-blogs-grid">
+    <!-- All blog posts will be loaded here -->
+  </div>
+</section>
+
+<!-- Write Blog Post Button -->
+<div class="write-blog-container">
+  <button id="write-blog-btn-main" class="btn btn-primary">Write a Blog Post</button>
+</div>
+
+<!-- Full Blog Post Modal -->
+<div class="blog-post-modal" id="blog-post-modal">
+  <div class="blog-post-modal-content">
+    <button class="blog-post-modal-close" onclick="closeBlogPostModal()">×</button>
+    <div class="blog-post-modal-body">
+      <div class="blog-post-modal-header">
+        <h2 id="modal-blog-title"></h2>
+        <p class="blog-post-meta"><span id="modal-blog-date"></span></p>
+      </div>
+      <div class="blog-post-modal-image" id="modal-blog-image"></div>
+      <div class="blog-post-modal-content" id="modal-blog-content"></div>
+      <div class="blog-comments-section">
+        <h3>Comments</h3>
+        <div id="modal-comments-list" class="comments-list"></div>
+        <div class="comment-form">
+          <input type="text" id="comment-author-input" placeholder="Your name" maxlength="50">
+          <textarea id="comment-content-input" placeholder="Write a comment..." rows="3" maxlength="500"></textarea>
+          <button id="comment-submit-btn" class="btn btn-primary">Post Comment</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/site.js"></script>
+<script>
+// Authentication handling
+function updateAuthUI() {
+  const token = localStorage.getItem('token');
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const authContainer = document.getElementById('authLinkContainer');
+  
+  if (token && user.id) {
+    const userDisplay = user.role === 'admin' ? `${user.name} (Admin)` : user.name;
+    let html = `<span class=\"user-menu\"><span style=\"color: white; font-size: 14px;\">Hello, ${userDisplay}</span>`;
+    if (user.role === 'admin') {
+      html += `<a href=\"admin_new.html\" class=\"btn-admin\">Admin Panel</a>`;
+    }
+    html += `<button class=\"btn-logout\" onclick=\"logout()\">Logout</button></span>`;
+    authContainer.innerHTML = html;
+  } else {
+    authContainer.innerHTML = '<a href=\"login.html\" class=\"btn-auth\">Login / Register</a>';
+  }
+}
+
+function logout() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  localStorage.removeItem('expiresAt');
+  updateAuthUI();
+  window.location.href = 'blog.html';
+}
+
+updateAuthUI();
+
+// Load blog posts
+document.addEventListener('DOMContentLoaded', async function() {
+  await loadBlogPosts();
+  loadSettings();
+
+  // If arriving via a hash (e.g., from Home page 'Read Full Post'), scroll to that blog
+  const hash = window.location.hash;
+  if (hash && hash.startsWith('#blog-')) {
+    const blogId = hash.replace('#blog-', '');
+    scrollToBlog(blogId);
+  }
+});
+
+// Cached blog posts (for modal/opening)
+let blogPostsCache = [];
+
+// Load all blog posts for the blog page
+async function loadBlogPosts() {
+  try {
+    const response = await fetch('/api/content/blog-posts');
+    const posts = await response.json();
+
+    blogPostsCache = posts;
+
+    // Update count
+    const countEl = document.getElementById('blog-count');
+    if (countEl) {
+      countEl.textContent = `${posts.length} post${posts.length === 1 ? '' : 's'} uploaded`;
+    }
+
+    if (!posts || posts.length === 0) {
+      document.getElementById('all-blogs-container').innerHTML = '<p style="text-align:center; color:#999;">No blog posts available yet</p>';
+      document.getElementById('featured-blog-container').innerHTML = '';
+      return;
+    }
+
+    // Show featured blog post (first one)
+    const featuredContainer = document.getElementById('featured-blog-container');
+    if (posts.length > 0) {
+      const featuredPost = posts[0];
+      featuredContainer.innerHTML = `
+        <div class="featured-blog-post">
+          <div class="featured-blog-image">
+            <img src="${featuredPost.imageUrl || '/html_them/img/bf.jpg'}" alt="${featuredPost.title}">
+          </div>
+          <div class="featured-blog-content">
+            <h2>${featuredPost.title}</h2>
+            <p class="blog-meta">Published on ${new Date(featuredPost.createdAt).toLocaleDateString()}</p>
+            <p class="blog-excerpt">${featuredPost.content.substring(0, 250)}...</p>
+            <button class="btn btn-primary" onclick="openBlogPost('${featuredPost._id}')">Read Full Post</button>
+          </div>
+        </div>
+      `;
+    }
+
+    // Show all blog posts as cards
+    const allBlogsContainer = document.getElementById('all-blogs-container');
+    allBlogsContainer.innerHTML = posts.map(post => `
+      <div class="blog-card" id="blog-${post._id}">
+        <img src="${post.imageUrl || '/html_them/img/bf.jpg'}" alt="${post.title}">
+        <div class="blog-card-body">
+          <h3>${post.title}</h3>
+          <p>${post.content.substring(0, 200)}${post.content.length > 200 ? '...' : ''}</p>
+          <div class="blog-card-footer">
+            <span class="blog-date">${new Date(post.createdAt).toLocaleDateString()}</span>
+            <button class="btn btn-secondary" onclick="openBlogPost('${post._id}')">Read Full Post</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+  } catch (error) {
+    console.error('Error loading blog posts:', error);
+  }
+}
+
+function openBlogPost(postId) {
+  const post = blogPostsCache.find(p => p._id === postId);
+  if (!post) return;
+
+  document.getElementById('modal-blog-title').textContent = post.title;
+  document.getElementById('modal-blog-date').textContent = `Published on ${new Date(post.createdAt).toLocaleDateString()}`;
+  document.getElementById('modal-blog-content').innerHTML = `<p>${post.content.replace(/\n/g, '<br>')}</p>`;
+
+  const imageContainer = document.getElementById('modal-blog-image');
+  if (post.imageUrl) {
+    imageContainer.innerHTML = `<img src="${post.imageUrl}" alt="${post.title}">`;
+  } else {
+    imageContainer.innerHTML = '';
+  }
+
+  // Show modal
+  document.getElementById('blog-post-modal').classList.add('show');
+
+  // Load comments for this post
+  loadComments(postId);
+
+  // Setup comment submit
+  const commentBtn = document.getElementById('comment-submit-btn');
+  commentBtn.onclick = () => submitComment(postId);
+}
+
+function closeBlogPostModal() {
+  document.getElementById('blog-post-modal').classList.remove('show');
+  document.getElementById('comment-author-input').value = '';
+  document.getElementById('comment-content-input').value = '';
+  document.getElementById('modal-comments-list').innerHTML = '';
+}
+
+// Close modal when clicking outside content
+(function initBlogModalOverlayClose() {
+  const modal = document.getElementById('blog-post-modal');
+  if (!modal) return;
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      closeBlogPostModal();
+    }
+  });
+})();
+
+async function loadComments(postId) {
+  const list = document.getElementById('modal-comments-list');
+  list.innerHTML = '<p>Loading comments...</p>';
+
+  try {
+    const response = await fetch(`/api/comments/blog/${postId}`);
+    const comments = await response.json();
+
+    if (!comments || comments.length === 0) {
+      list.innerHTML = '<p style="color:#666;">No comments yet. Be the first to comment!</p>';
+      return;
+    }
+
+    list.innerHTML = comments.map(c => `
+      <div class="comment-item">
+        <div class="comment-item-header">
+          <span class="comment-item-author">${c.author}</span>
+          <span class="comment-item-date">${new Date(c.createdAt).toLocaleString()}</span>
+        </div>
+        <div class="comment-item-body">${c.content}</div>
+      </div>
+    `).join('');
+
+  } catch (error) {
+    list.innerHTML = '<p style="color:#d00;">Unable to load comments.</p>';
+  }
+}
+
+async function submitComment(postId) {
+  const author = document.getElementById('comment-author-input').value.trim();
+  const content = document.getElementById('comment-content-input').value.trim();
+
+  if (!author || !content) {
+    alert('Please enter your name and comment.');
+    return;
+  }
+
+  try {
+    const response = await fetch(`/api/comments/blog/${postId}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ author, content })
+    });
+
+    if (response.ok) {
+      document.getElementById('comment-author-input').value = '';
+      document.getElementById('comment-content-input').value = '';
+      loadComments(postId);
+    } else {
+      alert('Failed to post comment.');
+    }
+  } catch (error) {
+    alert('Error posting comment.');
+  }
+}
+
+function scrollToBlog(blogId, attempt = 0) {
+  const element = document.getElementById(`blog-${blogId}`);
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    openBlogPost(blogId);
+    return;
+  }
+
+  // If the element isn't yet available (data still loading), retry a few times.
+  if (attempt < 5) {
+    setTimeout(() => scrollToBlog(blogId, attempt + 1), 150);
+  }
+}
+
+function scrollToBlog(blogId, attempt = 0) {
+  const element = document.getElementById(`blog-${blogId}`);
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return;
+  }
+
+  // If the element isn't yet available (data still loading), retry a few times.
+  if (attempt < 5) {
+    setTimeout(() => scrollToBlog(blogId, attempt + 1), 150);
+  }
+}
+
+// Write blog post functionality
+document.addEventListener('DOMContentLoaded', function() {
+  const writeBlogBtn = document.getElementById('write-blog-btn-main');
+  if (writeBlogBtn) {
+    writeBlogBtn.addEventListener('click', function() {
+      // Simple modal for writing blog posts
+      const modal = document.createElement('div');
+      modal.className = 'blog-modal';
+      modal.innerHTML = `
+        <div class="blog-modal-content">
+          <span class="blog-modal-close">&times;</span>
+          <h2>Write a Blog Post</h2>
+          <form id="blog-form">
+            <input type="text" id="blog-title" placeholder="Blog Title" required maxlength="100">
+            <textarea id="blog-content" placeholder="Share your food story..." rows="8" required maxlength="2000"></textarea>
+            <div class="file-upload-section">
+              <label for="blog-image">Add an image (optional):</label>
+              <input type="file" id="blog-image" accept="image/*">
+              <div id="image-preview" class="image-preview" style="display: none;">
+                <img id="preview-img" src="" alt="Preview">
+                <button type="button" onclick="removeImage()">Remove</button>
+              </div>
+            </div>
+            <button type="submit">Submit Blog Post</button>
+          </form>
+        </div>
+      `;
+      document.body.appendChild(modal);
+
+      // Lock background scrolling while modal is open
+      document.body.style.overflow = 'hidden';
+
+      modal.style.display = 'block';
+
+      // Close modal helper
+      const closeBlogModal = () => {
+        modal.remove();
+        document.body.style.overflow = '';
+      };
+
+      // Close modal
+      modal.querySelector('.blog-modal-close').onclick = closeBlogModal;
+
+      // Close on backdrop click
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          closeBlogModal();
+        }
+      });
+
+      // Submit form
+      modal.querySelector('#blog-form').onsubmit = async function(e) {
+        e.preventDefault();
+        const title = document.getElementById('blog-title').value;
+        const content = document.getElementById('blog-content').value;
+        const imageInput = document.getElementById('blog-image');
+        
+        let imageUrl = '';
+        let imageFilename = '';
+        
+        // Upload image if selected
+        if (imageInput.files && imageInput.files[0]) {
+          const formData = new FormData();
+          formData.append('file', imageInput.files[0]);
+          
+          try {
+            const uploadResponse = await fetch('/api/uploads', {
+              method: 'POST',
+              body: formData
+            });
+            
+            if (uploadResponse.ok) {
+              const uploadData = await uploadResponse.json();
+              imageUrl = uploadData.url;
+              imageFilename = uploadData.filename;
+            } else {
+              alert('Error uploading image. Please try again.');
+              return;
+            }
+          } catch (error) {
+            console.error('Error uploading image:', error);
+            alert('Error uploading image. Please try again.');
+            return;
+          }
+        }
+        
+        try {
+          const response = await fetch('/api/content/blog-posts-public', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              title,
+              content,
+              imageUrl,
+              imageFilename
+            })
+          });
+          
+          if (response.ok) {
+            alert('Thank you! Your blog post has been submitted for review.');
+            closeBlogModal();
+            loadBlogPosts(); // Reload posts
+          } else {
+            const errorText = await response.text();
+            console.error('Blog submission failed:', response.status, errorText);
+            alert('Error submitting blog post: ' + (errorText || response.statusText));
+          }
+        } catch (error) {
+          console.error('Error submitting blog post:', error);
+          alert('Error submitting blog post: ' + (error.message || 'Unknown error'));
+        }
+      };
+      
+      // Image preview functionality
+      const imageInput = modal.querySelector('#blog-image');
+      const preview = modal.querySelector('#image-preview');
+      const previewImg = modal.querySelector('#preview-img');
+      
+      imageInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            previewImg.src = e.target.result;
+            preview.style.display = 'block';
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    });
+  }
+});
+
+function removeImage() {
+  const imageInput = document.getElementById('blog-image');
+  const preview = document.getElementById('image-preview');
+  imageInput.value = '';
+  preview.style.display = 'none';
+}
+</script>
+<footer class="footer" role="contentinfo">
+  <div class="footer-wrap">
+    <div class="footer-col about">
+      <h3>Bella Vista Bistro</h3>
+      <p>Delicious food crafted with love. Fresh ingredients, warm service and a cozy atmosphere — perfect for family and friends.</p>
+      <div class="social-links">
+        <a class="facebook" href="https://facebook.com/yourpage" target="_blank" rel="noreferrer"><i class="fa fa-facebook"></i></a>
+        <a class="instagram" href="https://instagram.com/yourpage" target="_blank" rel="noreferrer"><i class="fa fa-instagram"></i></a>
+        <a class="twitter" href="https://twitter.com/yourpage" target="_blank" rel="noreferrer"><i class="fa fa-twitter"></i></a>
+        <a class="linkedin" href="https://linkedin.com/yourpage" target="_blank" rel="noreferrer"><i class="fa fa-linkedin"></i></a>
+        <a class="youtube" href="https://youtube.com/yourchannel" target="_blank" rel="noreferrer"><i class="fa fa-youtube"></i></a>
+      </div>
+    </div>
+    <div class="footer-col quick-links">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col contact-info">
+      <h3>Contact</h3>
+      <p><i class="fa fa-map-marker"></i> 123 Main Street, City</p>
+      <p><i class="fa fa-envelope"></i> info@bellavista.com</p>
+      <p><i class="fa fa-phone"></i> +880123456789</p>
+    </div>
+    <div class="footer-col newsletter">
+      <h3>Newsletter</h3>
+      <form id="footer-news-form">
+        <input type="email" name="email" placeholder="Enter your email" required>
+        <button type="submit">Subscribe</button>
+        <small>Subscribe for updates and exclusive offers.</small>
+      </form>
+    </div>
+  </div>
+  <div class="footer-bottom">&copy; <span id="year"></span> Bella Vista Bistro — All rights reserved</div>
+</footer>
+
+<script>
+// Handle newsletter form submission
+document.getElementById('footer-news-form')?.addEventListener('submit', async function(e){
+  e.preventDefault();
+  const email = this.querySelector('input[type="email"]').value;
+  
+  try {
+    const response = await fetch('/api/newsletter/subscribe', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email })
+    });
+    
+    if (response.ok) {
+      alert('Thank you for subscribing!');
+      this.reset();
+    } else {
+      alert('Failed to subscribe. Please try again.');
+  }
+  } catch (error) {
+    console.log('Newsletter subscription (offline mode)');
+    this.reset();
+  }
+});
+
+// include shared site utilities for auth/cart/dynamic content
+</script>
+<script src="js/site.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  updateAuthUI();
+  updateCartCount();
+  loadSettings();
+  loadHeroAndFeatured();
+});
+</script>
+
+</body>
+</html>

@@ -280,27 +280,59 @@ function openFeaturedModal() {
   openModal('featured-modal');
 }
 
+function editFeaturedItem(id) {
+  editingId.featured = id;
+  document.getElementById('featured-modal-title').textContent = 'Edit Featured Food';
+  openModal('featured-modal');
+
+  // load details into form
+  fetch(`/api/content/featured-images`) // fetch full list and find item
+    .then(r => r.json())
+    .then(items => {
+      const item = items.find(i => i._id === id);
+      if (!item) return;
+      document.getElementById('featured-title').value = item.title || '';
+      document.getElementById('featured-desc').value = item.description || '';
+      document.getElementById('featured-price').value = item.price || '';
+      document.getElementById('featured-preview').innerHTML = `<img src="${item.url}" style="max-width:100%;max-height:140px;border-radius:8px;" />`;
+    });
+}
+
 async function saveFeatured(event) {
   event.preventDefault();
   
   const fileInput = document.getElementById('featured-image');
-  if (!fileInput.files || !fileInput.files.length) {
-    showAlert('Please select an image', 'error');
-    return;
+  const titleInput = document.getElementById('featured-title');
+  const descInput = document.getElementById('featured-desc');
+  const priceInput = document.getElementById('featured-price');
+
+  let filename = '';
+  let url = '';
+
+  // If a new image is selected, upload it.
+  if (fileInput.files && fileInput.files.length) {
+    filename = await uploadFile(fileInput.files[0]);
+    if (!filename) return;
+    url = `/uploads/${filename}`;
   }
-  
-  const filename = await uploadFile(fileInput.files[0]);
-  if (!filename) return;
-  
+
   const data = {
-    filename: filename,
-    url: `/uploads/${filename}`,
-    position: Math.floor(Math.random() * 1000)
+    title: titleInput?.value || '',
+    description: descInput?.value || '',
+    price: parseFloat(priceInput?.value) || 0
   };
-  
+
+  if (url) {
+    data.url = url;
+    data.filename = filename;
+  }
+
   try {
-    const response = await fetch('/api/content/featured-images', {
-      method: 'POST',
+    const method = editingId.featured ? 'PUT' : 'POST';
+    const endpoint = editingId.featured ? `/api/content/featured-images/${editingId.featured}` : '/api/content/featured-images';
+
+    const response = await fetch(endpoint, {
+      method,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${authToken}`
@@ -309,11 +341,12 @@ async function saveFeatured(event) {
     });
     
     if (response.ok) {
-      showAlert('Featured food added successfully');
+      showAlert(editingId.featured ? 'Featured food updated successfully' : 'Featured food added successfully');
       closeModal('featured-modal');
       loadFeaturedImages();
+      editingId.featured = null;
     } else {
-      showAlert('Error adding featured food', 'error');
+      showAlert('Error saving featured food', 'error');
     }
   } catch (error) {
     showAlert('Error: ' + error.message, 'error');
@@ -326,24 +359,26 @@ async function loadFeaturedImages() {
       headers: { 'Authorization': `Bearer ${authToken}` }
     });
     const images = await response.json();
-    
+
     const grid = document.getElementById('featured-grid');
     grid.innerHTML = '';
-    
-    if (images.length === 0) {
+
+    if (!images || images.length === 0) {
       grid.innerHTML = '<div class="empty-state"><i class="fas fa-star"></i><p>No featured foods yet</p></div>';
       return;
     }
-    
+
     images.forEach(img => {
       const html = `
         <div class="content-item">
           <div class="content-item-image">
-            <img src="${img.url}" alt="Featured">
+            <img src="${img.url}" alt="${img.title||'Featured'}">
           </div>
           <div class="content-item-body">
-            <div class="content-item-title">${img.filename}</div>
+            <div class="content-item-title">${img.title||img.filename}</div>
+            <div class="content-item-meta">${img.description || ''}</div>
             <div class="content-item-actions">
+              <button type="button" class="btn-small btn-edit" onclick="editFeaturedItem('${img._id}')">Edit</button>
               <button type="button" class="btn-small btn-delete" onclick="deleteContent('featured', '${img._id}')">Delete</button>
             </div>
           </div>
@@ -408,35 +443,173 @@ async function saveBlog(event) {
   }
 }
 
-async function loadBlogPosts() {
+async function loadBlogPosts(filter = 'all') {
   try {
-    const response = await fetch('/api/content/blog-posts', {
+    const response = await fetch('/api/content/blog-posts-admin', {
       headers: { 'Authorization': `Bearer ${authToken}` }
     });
     const posts = await response.json();
     
+    // Filter posts based on tab
+    let filteredPosts = posts;
+    if (filter === 'published') {
+      filteredPosts = posts.filter(post => post.status === 'published');
+    } else if (filter === 'draft') {
+      filteredPosts = posts.filter(post => post.status === 'draft');
+    }
+    
     const tbody = document.querySelector('#blog-list');
     tbody.innerHTML = '';
     
-    if (posts.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="4" class="empty-state"><i class="fas fa-blog"></i> No blog posts yet</td></tr>';
+    if (filteredPosts.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" class="empty-state"><i class="fas fa-blog"></i> No blog posts found</td></tr>';
       return;
     }
     
-    posts.forEach(post => {
+    filteredPosts.forEach(post => {
+      const authorName = post.createdBy ? post.createdBy.name : 'Customer';
+      const commentsButton = `
+        <button type="button" class="btn-small btn-secondary" onclick="openCommentsModal('${post._id}')">
+          Comments
+        </button>
+      `;
+
+      const actions = post.status === 'draft' 
+        ? `${commentsButton}
+           <button type="button" class="btn-small btn-approve" onclick="approveBlogPost('${post._id}')">Approve</button>
+           <button type="button" class="btn-small btn-reject" onclick="rejectBlogPost('${post._id}')">Reject</button>`
+        : `${commentsButton}
+           <button type="button" class="btn-small btn-delete" onclick="deleteContent('blog', '${post._id}')">Delete</button>`;
+        
       tbody.innerHTML += `
         <tr>
           <td><strong>${post.title}</strong></td>
           <td><span class="status-badge status-${post.status}">${post.status}</span></td>
+          <td>${authorName}</td>
           <td>${new Date(post.createdAt).toLocaleDateString()}</td>
-          <td>
-            <button type="button" class="btn-small btn-delete" onclick="deleteContent('blog', '${post._id}')">Delete</button>
-          </td>
+          <td>${actions}</td>
         </tr>
       `;
     });
   } catch (error) {
     showAlert('Error loading blog posts', 'error');
+  }
+}
+
+function switchBlogTab(filter, button) {
+  // Update active tab
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  if (button) {
+    button.classList.add('active');
+  }
+  
+  // Load posts with filter
+  loadBlogPosts(filter);
+}
+
+async function approveBlogPost(postId) {
+  try {
+    const response = await fetch(`/api/content/blog-posts/${postId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`
+      },
+      body: JSON.stringify({ status: 'published' })
+    });
+    
+    if (response.ok) {
+      showAlert('Blog post approved and published');
+      loadBlogPosts();
+    } else {
+      showAlert('Error approving blog post', 'error');
+    }
+  } catch (error) {
+    showAlert('Error: ' + error.message, 'error');
+  }
+}
+
+async function rejectBlogPost(postId) {
+  if (!confirm('Are you sure you want to reject and delete this blog post?')) {
+    return;
+  }
+  
+  try {
+    const response = await fetch(`/api/content/blog-posts/${postId}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${authToken}` }
+    });
+    
+    if (response.ok) {
+      showAlert('Blog post rejected and deleted');
+      loadBlogPosts();
+    } else {
+      showAlert('Error rejecting blog post', 'error');
+    }
+  } catch (error) {
+    showAlert('Error: ' + error.message, 'error');
+  }
+}
+
+// ===== COMMENT MANAGEMENT =====
+function openCommentsModal(postId) {
+  openModal('comments-modal');
+  loadComments(postId);
+}
+
+async function loadComments(postId) {
+  const container = document.getElementById('comments-list');
+  container.innerHTML = '<p>Loading comments...</p>';
+
+  try {
+    const response = await fetch(`/api/comments/blog/${postId}`, {
+      headers: { 'Authorization': `Bearer ${authToken}` }
+    });
+    const comments = await response.json();
+
+    if (!comments || comments.length === 0) {
+      container.innerHTML = '<p>No comments yet.</p>';
+      return;
+    }
+
+    container.innerHTML = '<div class="comments-admin-list"></div>';
+    const list = container.querySelector('.comments-admin-list');
+
+    comments.forEach(comment => {
+      const date = new Date(comment.createdAt).toLocaleString();
+      list.innerHTML += `
+        <div class="comment-admin-item">
+          <div class="comment-admin-meta">
+            <strong>${comment.author}</strong> <span class="comment-admin-date">${date}</span>
+          </div>
+          <div class="comment-admin-body">${comment.content}</div>
+          <div class="comment-admin-actions">
+            <button class="btn-small btn-reject" onclick="deleteComment('${comment._id}', '${postId}')">Delete</button>
+          </div>
+        </div>
+      `;
+    });
+  } catch (error) {
+    container.innerHTML = '<p>Error loading comments.</p>';
+  }
+}
+
+async function deleteComment(commentId, postId) {
+  if (!confirm('Delete this comment?')) return;
+  
+  try {
+    const response = await fetch(`/api/comments/${commentId}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${authToken}` }
+    });
+    if (response.ok) {
+      showAlert('Comment deleted');
+      loadComments(postId);
+    } else {
+      showAlert('Error deleting comment', 'error');
+    }
+  } catch (error) {
+    showAlert('Error: ' + error.message, 'error');
   }
 }
 
@@ -831,7 +1004,23 @@ document.getElementById('settings-form').addEventListener('submit', async (e) =>
     email: document.getElementById('setting-email').value,
     phone: document.getElementById('setting-phone').value,
     address: document.getElementById('setting-address').value,
-    about: document.getElementById('setting-about').value
+    about: document.getElementById('setting-about').value,
+
+    // homepage content
+    heroTitle: document.getElementById('setting-hero-title').value,
+    heroSubtitle: document.getElementById('setting-hero-subtitle').value,
+    heroCtaText: document.getElementById('setting-hero-cta-text').value,
+    heroCtaUrl: document.getElementById('setting-hero-cta-url').value,
+
+    aboutTitle: document.getElementById('setting-about-title').value,
+    aboutText: document.getElementById('setting-about-text').value,
+    aboutImageUrl: document.getElementById('setting-about-image').value,
+    aboutButtonText: document.getElementById('setting-about-btn-text').value,
+    aboutButtonUrl: document.getElementById('setting-about-btn-url').value,
+
+    newsletterTitle: document.getElementById('setting-newsletter-title').value,
+    newsletterText: document.getElementById('setting-newsletter-text').value,
+    newsletterButtonText: document.getElementById('setting-newsletter-btn-text').value
   };
   
   try {
@@ -980,7 +1169,22 @@ async function loadSettings() {
       document.getElementById('setting-phone').value = settings.phone || '';
       document.getElementById('setting-address').value = settings.address || '';
       document.getElementById('setting-about').value = settings.about || '';
-      
+
+      document.getElementById('setting-hero-title').value = settings.heroTitle || '';
+      document.getElementById('setting-hero-subtitle').value = settings.heroSubtitle || '';
+      document.getElementById('setting-hero-cta-text').value = settings.heroCtaText || '';
+      document.getElementById('setting-hero-cta-url').value = settings.heroCtaUrl || '';
+
+      document.getElementById('setting-about-title').value = settings.aboutTitle || '';
+      document.getElementById('setting-about-text').value = settings.aboutText || '';
+      document.getElementById('setting-about-image').value = settings.aboutImageUrl || '';
+      document.getElementById('setting-about-btn-text').value = settings.aboutButtonText || '';
+      document.getElementById('setting-about-btn-url').value = settings.aboutButtonUrl || '';
+
+      document.getElementById('setting-newsletter-title').value = settings.newsletterTitle || '';
+      document.getElementById('setting-newsletter-text').value = settings.newsletterText || '';
+      document.getElementById('setting-newsletter-btn-text').value = settings.newsletterButtonText || '';
+
       // Attach form submit handler
       const form = document.getElementById('settings-form');
       if (form) {
@@ -1000,7 +1204,22 @@ async function saveSettings(event) {
     email: document.getElementById('setting-email').value,
     phone: document.getElementById('setting-phone').value,
     address: document.getElementById('setting-address').value,
-    about: document.getElementById('setting-about').value
+    about: document.getElementById('setting-about').value,
+
+    heroTitle: document.getElementById('setting-hero-title').value,
+    heroSubtitle: document.getElementById('setting-hero-subtitle').value,
+    heroCtaText: document.getElementById('setting-hero-cta-text').value,
+    heroCtaUrl: document.getElementById('setting-hero-cta-url').value,
+
+    aboutTitle: document.getElementById('setting-about-title').value,
+    aboutText: document.getElementById('setting-about-text').value,
+    aboutImageUrl: document.getElementById('setting-about-image').value,
+    aboutButtonText: document.getElementById('setting-about-btn-text').value,
+    aboutButtonUrl: document.getElementById('setting-about-btn-url').value,
+
+    newsletterTitle: document.getElementById('setting-newsletter-title').value,
+    newsletterText: document.getElementById('setting-newsletter-text').value,
+    newsletterButtonText: document.getElementById('setting-newsletter-btn-text').value
   };
   
   try {

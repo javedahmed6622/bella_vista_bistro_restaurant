@@ -5,6 +5,7 @@
   <!-- Add icon library -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="styles-new.css">
     <link rel="stylesheet" type="text/css" href="css/about.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,6 +23,7 @@
       <li><a href="index.html">Home</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="menu.html">Menu</a></li>
+      <li><a href="blog.html">Blog</a></li>
       <li><a href="contact.html">Contact</a></li>
       <li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart <span class="cart-count">0</span></a></li>
       <li id="authLinkContainer">
@@ -114,6 +116,12 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 <script src="js/site.js"></script>
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+  updateAuthUI();
+  updateCartCount();
+  loadSettings();
+  loadTeam();
+});
 // page-specific newsletter handling
 // (site.js already provides auth, cart and settings updates)
 </script>

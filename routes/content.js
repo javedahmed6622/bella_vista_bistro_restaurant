@@ -81,8 +81,8 @@ router.get('/featured-images', async (req, res) => {
 
 router.post('/featured-images', verifyAdmin, async (req, res) => {
   try {
-    const { url, filename, position } = req.body;
-    const featuredImage = new FeaturedImage({ url, filename, position });
+    const { url, filename, title, description, position } = req.body;
+    const featuredImage = new FeaturedImage({ url, filename, title, description, position });
     await featuredImage.save();
     res.status(201).json(featuredImage);
   } catch (error) {
@@ -92,10 +92,10 @@ router.post('/featured-images', verifyAdmin, async (req, res) => {
 
 router.put('/featured-images/:id', verifyAdmin, async (req, res) => {
   try {
-    const { url, filename, position } = req.body;
+    const { url, filename, title, description, position } = req.body;
     const featuredImage = await FeaturedImage.findByIdAndUpdate(
       req.params.id,
-      { url, filename, position, updatedAt: new Date() },
+      { url, filename, title, description, position, updatedAt: new Date() },
       { new: true }
     );
     res.json(featuredImage);
@@ -117,6 +117,18 @@ router.delete('/featured-images/:id', verifyAdmin, async (req, res) => {
 router.get('/blog-posts', async (req, res) => {
   try {
     const posts = await BlogPost.find({ status: 'published' })
+      .populate('createdBy', 'name')
+      .sort({ createdAt: -1 });
+    res.json(posts);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Get all blog posts for admin (including drafts)
+router.get('/blog-posts-admin', verifyAdmin, async (req, res) => {
+  try {
+    const posts = await BlogPost.find()
       .populate('createdBy', 'name')
       .sort({ createdAt: -1 });
     res.json(posts);
@@ -170,6 +182,30 @@ router.delete('/blog-posts/:id', verifyAdmin, async (req, res) => {
   try {
     await BlogPost.findByIdAndDelete(req.params.id);
     res.json({ message: 'Blog post deleted' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Submit blog post from customer (goes to draft)
+router.post('/blog-posts-public', async (req, res) => {
+  try {
+    const { title, content, imageUrl, imageFilename } = req.body;
+    
+    if (!title || !content) {
+      return res.status(400).json({ message: 'Title and content are required' });
+    }
+    
+    const blogPost = new BlogPost({
+      title,
+      content,
+      imageUrl,
+      imageFilename,
+      status: 'draft' // Customer posts start as draft
+    });
+    
+    await blogPost.save();
+    res.status(201).json(blogPost);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

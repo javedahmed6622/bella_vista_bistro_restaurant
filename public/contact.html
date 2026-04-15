@@ -4,6 +4,7 @@
     <title>Contact Us - Bella Vista Bistro</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="styles-new.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -354,6 +355,7 @@
         <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="menu.html">Menu</a></li>
+        <li><a href="blog.html">Blog</a></li>
         <li><a href="contact.html">Contact</a></li>
         <li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart <span class="cart-count">0</span></a></li>
         <li id="authLinkContainer">
@@ -474,6 +476,11 @@
 
   <script src="js/site.js"></script>
   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      updateAuthUI();
+      updateCartCount();
+      loadSettings();
+    });
     // Alert function for UI feedback
     function showAlert(message, type = 'success') {
       const container = document.getElementById('alert-container');
